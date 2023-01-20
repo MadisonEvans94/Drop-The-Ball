@@ -1,11 +1,13 @@
 //Global constants
 const PEG_COLOR = "black";
+const CIRCLE_RADIUS = 30;
+const PEG_RADIUS = 20;
 
 // Canvas Setup
 const canvas = document.querySelector("canvas");
 const container = document.querySelector(".canvas-container");
 canvas.width = window.innerWidth;
-canvas.height = window.innerHeight * 0.9;
+canvas.height = window.innerHeight;
 const ctx = canvas.getContext("2d");
 
 //canvas event listener
@@ -53,6 +55,8 @@ class Circle extends CanvasEntity {
 	render() {
 		ctx.beginPath();
 		ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+		ctx.fillStyle = "black";
+		ctx.fill();
 	}
 	animate() {
 		this.x += this.dx;
@@ -73,14 +77,14 @@ class Circle extends CanvasEntity {
 class Peg extends CanvasEntity {
 	constructor(x, y, radius) {
 		super(x, y, radius);
+		this.color = "blue";
 	}
 
 	render() {
-		ctx.fillStyle = "black";
-		ctx.fill();
-		ctx.stroke();
 		ctx.beginPath();
 		ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+		ctx.fillStyle = this.color;
+		ctx.fill();
 	}
 }
 
@@ -103,28 +107,45 @@ function initPegArray(num, radius) {
 	return pegArray;
 }
 
-//Peg Board Rendering function
-function renderPegArray(pegArray) {
-	pegArray.forEach((peg) => peg.render());
+// Peg Board Rendering function
+function renderPegArray(pegArray, c) {
+	pegArray.forEach((peg) => {
+		hasCollided(c, peg);
+		peg.render();
+	});
 }
 
 /* ------------------------------ COLLISION DETECTION --------------------------------- */
+
+//pythagorean theorem helper function
 function computeDistance(x1, y1, x2, y2) {
 	let xDistance = x2 - x1;
 	let yDistance = y2 - y1;
 	return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
 }
 
+//detect collision between circle and peg
+function hasCollided(circle, peg) {
+	if (
+		computeDistance(circle.x, circle.y, peg.x, peg.y) <
+		PEG_RADIUS + CIRCLE_RADIUS
+	) {
+		peg.color = "red";
+	} else {
+		peg.color = "blue";
+	}
+}
+
 // object Instantiation
-const circle = new Circle(100, 100, 20, 2);
-const pegArray = initPegArray(4, 20);
+const circle = new Circle(100, 100, CIRCLE_RADIUS, 2);
+const pegArray = initPegArray(4, PEG_RADIUS);
 
 //animation loop
 function animate() {
 	ctx.clearRect(0, 0, innerWidth, innerHeight);
-	renderPegArray(pegArray);
 	circle.render();
 	circle.animate();
+	renderPegArray(pegArray, circle);
 	requestAnimationFrame(animate);
 }
 
