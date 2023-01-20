@@ -9,15 +9,28 @@ const container = document.querySelector(".canvas-container");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 const ctx = canvas.getContext("2d");
+let isActive = false;
 
-//canvas event listener
+// event listeners
 const stopButton = document.createElement("button");
 stopButton.textContent = "Stop";
+
 stopButton.addEventListener("click", (e) => {
 	console.log("this button has not been configured yet");
 });
 
 document.body.append(stopButton);
+
+canvas.addEventListener("mousemove", (e) => {
+	console.log(e.screenX);
+});
+
+canvas.addEventListener("click", () => {
+	isActive = !isActive;
+	if (isActive) {
+		animate();
+	}
+});
 
 // super class for any physical element within the canvas (ball and pegs)
 class CanvasEntity {
@@ -115,6 +128,11 @@ function renderPegArray(pegArray, c) {
 	});
 }
 
+// object Instantiation
+const circle = new Circle(innerWidth / 2, CIRCLE_RADIUS * 2, CIRCLE_RADIUS, 2);
+const pegArray = initPegArray(4, PEG_RADIUS);
+circle.render();
+renderPegArray(pegArray, circle);
 /* ------------------------------ COLLISION DETECTION --------------------------------- */
 
 //pythagorean theorem helper function
@@ -136,17 +154,12 @@ function hasCollided(circle, peg) {
 	}
 }
 
-// object Instantiation
-const circle = new Circle(100, 100, CIRCLE_RADIUS, 2);
-const pegArray = initPegArray(4, PEG_RADIUS);
-
 //animation loop
 function animate() {
+	if (!isActive) return;
 	ctx.clearRect(0, 0, innerWidth, innerHeight);
 	circle.render();
 	circle.animate();
 	renderPegArray(pegArray, circle);
 	requestAnimationFrame(animate);
 }
-
-animate();
