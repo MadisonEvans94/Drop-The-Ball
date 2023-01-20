@@ -1,7 +1,7 @@
 //Global constants
 const PEG_COLOR = "black";
 const CIRCLE_RADIUS = 30;
-const PEG_RADIUS = 20;
+const PEG_RADIUS = 18;
 
 // Canvas Setup
 const canvas = document.querySelector("canvas");
