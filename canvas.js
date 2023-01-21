@@ -1,7 +1,7 @@
 //Global constants and variables
 const PEG_COLOR = "black";
 const CIRCLE_RADIUS = 30;
-const PEG_RADIUS = 15;
+const PEG_RADIUS = 20;
 const sequenceArray = [];
 const DAMPER = 0.9;
 const PEG_NUM = 5;
@@ -28,6 +28,7 @@ const ctx = canvas.getContext("2d");
 	canvas.style.height = "100%";
 	canvas.width = canvas.offsetWidth;
 	canvas.height = canvas.offsetHeight;
+	ctx.font = "30px Arial";
 })();
 
 // event listeners
@@ -83,7 +84,7 @@ class Circle extends CanvasEntity {
 	draw() {
 		ctx.beginPath();
 		ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-		ctx.fillStyle = "black";
+		ctx.fillStyle = "white";
 		ctx.fill();
 	}
 
@@ -112,6 +113,7 @@ class Peg extends CanvasEntity {
 		this.mass = mass;
 		this.dx = 0;
 		this.dy = 0;
+		this.showText = false;
 	}
 
 	draw() {
@@ -119,6 +121,10 @@ class Peg extends CanvasEntity {
 		ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
 		ctx.fillStyle = this.color;
 		ctx.fill();
+		if (this.showText) {
+			ctx.fillStyle = "white";
+			ctx.fillText(`${this.number}`, this.x, this.y);
+		}
 	}
 }
 
@@ -192,6 +198,8 @@ renderPegArray(pegArray, circle);
 /* ------------------------------------- ANIMATION LOOP ----------------------------------------------- */
 function refreshCanvas() {
 	ctx.clearRect(0, 0, innerWidth, innerHeight);
+	ctx.fillStyle = "black";
+	ctx.fillRect(0, 0, innerWidth, innerWidth);
 }
 
 function animate() {
@@ -257,6 +265,7 @@ function hasCollided(circle, peg) {
 	) {
 		//do this...
 		peg.color = "red";
+		peg.showText = true;
 		let angle = computeAngle(circle.x, circle.y, peg.x, peg.y);
 		resolveCollision(circle, peg, angle);
 		sequenceArray.push(peg.number);
