@@ -11,6 +11,9 @@ canvas {
 }
 
 .canvas-container {
-	width: 100%;
+	position: relative;
+	width: 80rem;
+	height: 40rem;
+
 	height: 100%;
 }

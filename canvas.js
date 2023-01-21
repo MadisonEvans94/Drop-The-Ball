@@ -1,42 +1,40 @@
-//Global constants
+//Global constants and variables
 const PEG_COLOR = "black";
 const CIRCLE_RADIUS = 30;
 const PEG_RADIUS = 15;
 const sequenceArray = [];
 const DAMPER = 0.9;
 const PEG_NUM = 5;
-const XSTART = 80;
-const YSTART = 50;
-const CIRCLE_MASS = 1;
+const XSTART = innerWidth / 2 + 10;
+const YSTART = CIRCLE_RADIUS + 1;
+const CIRCLE_MASS = 0.1;
+let isActive = true;
+let mousePos;
+
+//gravity globals
+let isGravityEnabled = false;
+let gravity = 0;
 
 // Canvas Setup
 const canvas = document.querySelector("canvas");
 const container = document.querySelector(".canvas-container");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
 const ctx = canvas.getContext("2d");
-let isActive = false;
+
+//IIFE for initializing the canvas settings on load
+(function initCanvas() {
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+	canvas.style.width = "100%";
+	canvas.style.height = "100%";
+	canvas.width = canvas.offsetWidth;
+	canvas.height = canvas.offsetHeight;
+})();
 
 // event listeners
-const stopButton = document.createElement("button");
-stopButton.textContent = "Stop";
-
-stopButton.addEventListener("click", (e) => {
-	console.log("this button has not been configured yet");
-});
-
-document.body.append(stopButton);
-
 canvas.addEventListener("mousemove", (e) => {
-	//console.log(e.screenX, e.screenY);
+	mousePos = e.screenX;
 });
-
-canvas.addEventListener("click", () => {
-	isActive = !isActive;
-	if (isActive) {
-		animate();
-	}
-});
+canvas.addEventListener("click", () => toggleGravity());
 
 // super class for any physical element within the canvas (ball and pegs)
 class CanvasEntity {
@@ -54,12 +52,23 @@ class CanvasEntity {
 	set(radius) {
 		this.radius = radius;
 	}
-	update() {
+	draw() {
 		console.log("this element does not have a concrete render method");
 	}
 }
 
-//Circle child class
+//gravity toggler helper function
+function toggleGravity() {
+	console.log("gravity toggled", gravity);
+	isGravityEnabled = !isGravityEnabled;
+	if (isGravityEnabled) {
+		gravity = 1;
+	} else {
+		gravity = 0;
+	}
+}
+
+//Circle class (extends canvas entity)
 class Circle extends CanvasEntity {
 	constructor(x, y, radius, mass) {
 		super(x, y, radius);
@@ -71,13 +80,14 @@ class Circle extends CanvasEntity {
 	set(mass) {
 		this.mass = mass;
 	}
-	update() {
+	draw() {
 		ctx.beginPath();
 		ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
 		ctx.fillStyle = "black";
 		ctx.fill();
 	}
-	animate() {
+
+	update() {
 		this.x += this.dx;
 		this.y += this.dy;
 
@@ -89,8 +99,26 @@ class Circle extends CanvasEntity {
 			this.dy = -this.dy;
 		}
 
-		//gravity
-		this.dy += 0.1;
+		this.dy += gravity * this.mass;
+	}
+}
+
+//Peg class (extends canvas entity)
+class Peg extends CanvasEntity {
+	constructor(x, y, radius, number, mass = 10) {
+		super(x, y, radius);
+		this.color = "blue";
+		this.number = number;
+		this.mass = mass;
+		this.dx = 0;
+		this.dy = 0;
+	}
+
+	draw() {
+		ctx.beginPath();
+		ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+		ctx.fillStyle = this.color;
+		ctx.fill();
 	}
 }
 
@@ -116,29 +144,7 @@ const circleFactory = new CircleFactory(
 	CIRCLE_MASS
 );
 
-//Peg child class
-class Peg extends CanvasEntity {
-	constructor(x, y, radius, number, mass = 10) {
-		super(x, y, radius);
-		this.color = "blue";
-		this.number = number;
-		this.mass = mass;
-		this.dx = 0;
-		this.dy = 0;
-	}
-
-	update() {
-		ctx.beginPath();
-		ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-		ctx.fillStyle = this.color;
-		ctx.fill();
-	}
-}
-
-// Peg Board Array Initiator function
-/*
-	TODO: offset pegs 
-*/
+// Peg Board Array Initiator function. Builds the instances of each peg within the peg board array
 function initPegArray(num, radius) {
 	const widthBetween = innerWidth / num;
 	const heightBetween = innerHeight / num;
@@ -163,28 +169,30 @@ function initPegArray(num, radius) {
 	return pegArray;
 }
 
-// Peg Board Rendering function. Note that function requires reference to circle object in order to handle collision functions
+// Peg Board Rendering function. Renders peg array to DOM. Note that function requires reference to circle object in order to handle collision functions
 function renderPegArray(pegArray, circle) {
 	pegArray.forEach((peg) => {
 		//at each animation frame, checks each peg in array to see if it has collided with ball
 		hasCollided(circle, peg);
 
 		//updates each peg in the DOM
-		peg.update();
+		peg.draw();
 	});
 }
 
-/* ------------------------------ OBJECT INSTANTIATION --------------------------------- */
-
-//Main Circle Object
+/* ------------------------------------- OBJECT INSTANTIATION ---------------------------------------- */
 
 const circle = circleFactory.build();
 
-const pegArray = initPegArray(PEG_NUM, PEG_RADIUS);
-circle.update();
+let pegArray = initPegArray(PEG_NUM, PEG_RADIUS);
+
+circle.draw();
 renderPegArray(pegArray, circle);
 
-/* ------------------------------ ANIMATION LOOP --------------------------------- */
+/* ------------------------------------- ANIMATION LOOP ----------------------------------------------- */
+function refreshCanvas() {
+	ctx.clearRect(0, 0, innerWidth, innerHeight);
+}
 
 function animate() {
 	//if the user changes isActive to falsy, then break out of the animation loop
@@ -194,16 +202,26 @@ function animate() {
 
 	//if the ball reaches the bottom of the canvas, then break out of the animation loop and return/log the sequence array
 	if (circle.y + circle.radius > innerHeight * 0.99) {
-		console.log(sequenceArray);
-		return sequenceArray;
+		alert(sequenceArray);
+		return `YOUR SEQUENCE IS ${sequenceArray}`;
 	}
 
 	//refreshes the canvas between renders
-	ctx.clearRect(0, 0, innerWidth, innerHeight);
+	refreshCanvas();
+
+	//conditional for circle state before gravity is enabled
+	if (!isGravityEnabled) {
+		/*
+
+		TODO: circle position is controlled by event listener mouse scroll 
+
+		*/
+		circle.x = mousePos;
+	}
 
 	//update and animate the circle
+	circle.draw();
 	circle.update();
-	circle.animate();
 
 	//render the peg states with respect to the circle object
 	renderPegArray(pegArray, circle);
@@ -211,13 +229,12 @@ function animate() {
 	//perform browser rendering of frame
 	requestAnimationFrame(animate);
 }
+animate();
 
-/* ------------------------------ COLLISION DETECTION --------------------------------- */
+/* ------------------------------------- COLLISION DETECTION ---------------------------------------- */
 
 //pythagorean theorem helper function
-/* 
-	TODO: Combine computeDistance and computeAngle into one "pythag" function that returns an object containing distance and angle
-*/
+
 function computeDistance(x1, y1, x2, y2) {
 	//X and Y distances between point 1 and point 2
 	let xDistance = x2 - x1;
@@ -229,15 +246,6 @@ function computeDistance(x1, y1, x2, y2) {
 // calculates angle between two entities that have collided
 function computeAngle(x1, y1, x2, y2) {
 	return -Math.atan2(y2 - y1, x2 - x1);
-}
-
-//rotater function is a helper function to simplify the "Newtonian 1D momentum" equations
-function rotate(dx, dy, angle) {
-	//returns velocity vector projected onto the x dimension
-	return {
-		x: dx * Math.cos(angle) - dy * Math.sin(angle),
-		y: dx * Math.sin(angle) + dy * Math.cos(angle),
-	};
 }
 
 //detect collision between circle and peg
@@ -258,7 +266,18 @@ function hasCollided(circle, peg) {
 	}
 }
 
-//all physics logic dealing with what happens in a collsion goes here:
+/* ------------------------------------- PHYSICS IMPLEMENTATION ---------------------------------------- */
+
+//rotater function is a helper function to simplify the "Newtonian 1D momentum" equations
+function rotate(dx, dy, angle) {
+	//returns velocity vector projected onto the x dimension
+	return {
+		x: dx * Math.cos(angle) - dy * Math.sin(angle),
+		y: dx * Math.sin(angle) + dy * Math.cos(angle),
+	};
+}
+
+//resolver for handling the physics outputs
 function resolveCollision(circle, peg, angle) {
 	//difference in velocities of circle and peg
 	const xVelocityDiff = circle.dx - peg.dx;
