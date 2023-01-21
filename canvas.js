@@ -1,6 +1,6 @@
 //Global constants and variables
 const PEG_COLOR = "black";
-const CIRCLE_RADIUS = 30;
+const CIRCLE_RADIUS = 40;
 const PEG_RADIUS = 20;
 const sequenceArray = [];
 const DAMPER = 0.9;
@@ -68,6 +68,7 @@ function toggleGravity() {
 		gravity = 0;
 	}
 }
+/* ------------------------------------- CLASSES ---------------------------------------- */
 
 //Circle class (extends canvas entity)
 class Circle extends CanvasEntity {
@@ -123,7 +124,11 @@ class Peg extends CanvasEntity {
 		ctx.fill();
 		if (this.showText) {
 			ctx.fillStyle = "white";
-			ctx.fillText(`${this.number}`, this.x, this.y);
+			ctx.fillText(
+				`${this.number}`,
+				this.x - this.radius / 3,
+				this.y + this.radius / 2
+			);
 		}
 	}
 }
@@ -150,6 +155,8 @@ const circleFactory = new CircleFactory(
 	CIRCLE_MASS
 );
 
+/* ------------------------------------- PEG ARRAY SETUP ---------------------------------------- */
+
 // Peg Board Array Initiator function. Builds the instances of each peg within the peg board array
 function initPegArray(num, radius) {
 	const widthBetween = innerWidth / num;
@@ -161,8 +168,9 @@ function initPegArray(num, radius) {
 		for (let j = 0; j <= num; j++) {
 			pegArray.push(
 				new Peg(
+					//order of i and j matters. switched here so that the arrangement offsets correctly
 					j * widthBetween + widthBetween / 2 + offset,
-					i * heightBetween + heightBetween / 2,
+					i * heightBetween + heightBetween / 2 + CIRCLE_RADIUS * 2,
 					radius,
 
 					//creates random ints between 1-9 for each peg
@@ -194,14 +202,13 @@ let pegArray = initPegArray(PEG_NUM, PEG_RADIUS);
 
 circle.draw();
 renderPegArray(pegArray, circle);
-
 /* ------------------------------------- ANIMATION LOOP ----------------------------------------------- */
+
 function refreshCanvas() {
 	ctx.clearRect(0, 0, innerWidth, innerHeight);
 	ctx.fillStyle = "black";
 	ctx.fillRect(0, 0, innerWidth, innerWidth);
 }
-
 function animate() {
 	//if the user changes isActive to falsy, then break out of the animation loop
 	if (!isActive) {
@@ -209,7 +216,7 @@ function animate() {
 	}
 
 	//if the ball reaches the bottom of the canvas, then break out of the animation loop and return/log the sequence array
-	if (circle.y + circle.radius > innerHeight * 0.99) {
+	if (circle.y + circle.radius > innerHeight) {
 		alert(sequenceArray);
 		return `YOUR SEQUENCE IS ${sequenceArray}`;
 	}
@@ -238,11 +245,9 @@ function animate() {
 	requestAnimationFrame(animate);
 }
 animate();
-
 /* ------------------------------------- COLLISION DETECTION ---------------------------------------- */
 
 //pythagorean theorem helper function
-
 function computeDistance(x1, y1, x2, y2) {
 	//X and Y distances between point 1 and point 2
 	let xDistance = x2 - x1;
