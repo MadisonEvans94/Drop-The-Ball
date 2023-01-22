@@ -11,7 +11,7 @@ const CIRCLE_MASS = 0.1;
 const CANVAS_COLOR = "black";
 let isActive = true;
 let mousePos;
-const MAX_NUM = 20; // maximum value of number attribute within a peg
+const MAX_NUM = 50; // maximum value of number attribute within a peg
 
 //gravity globals
 let isGravityEnabled = false;
@@ -201,8 +201,7 @@ function animate() {
 
 	//if the ball reaches the bottom of the canvas, then break out of the animation loop and return/log the sequence array
 	if (circle.y + circle.radius > innerHeight) {
-		alert(sequenceSum);
-		return `YOUR SEQUENCE IS ${sequenceSum}`;
+		return sequenceSum;
 	}
 
 	//refreshes the canvas between renders
