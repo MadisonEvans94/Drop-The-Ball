@@ -1,17 +1,17 @@
 //Global constants and variables
 const PEG_COLOR = "black";
-const CIRCLE_RADIUS = 40;
-const PEG_RADIUS = 20;
+const CIRCLE_RADIUS = 30;
+const PEG_RADIUS = 10;
 let sequenceSum = 0;
 const DAMPER = 0.9;
-const PEG_NUM = 5;
+const PEG_NUM = 8;
 const XSTART = innerWidth / 2 + 10;
 const YSTART = CIRCLE_RADIUS + 1;
 const CIRCLE_MASS = 0.1;
 const CANVAS_COLOR = "black";
 let isActive = true;
 let mousePos;
-const MAX_NUM = 20;
+const MAX_NUM = 20; // maximum value of number attribute within a peg
 
 //gravity globals
 let isGravityEnabled = false;
@@ -26,21 +26,8 @@ const ctx = canvas.getContext("2d");
 (function initCanvas() {
 	canvas.width = innerWidth;
 	canvas.height = innerHeight;
-	canvas.style.width = "100%";
-	canvas.style.height = "100%";
 	ctx.font = "30px Arial";
 })();
-
-function resizeCanvas() {
-	canvas.width = window.innerWidth;
-	canvas.height = window.innerHeight;
-}
-
-window.onresize = function () {
-	console.log("resizing");
-	resizeCanvas();
-	drawCanvas();
-};
 
 // event listeners
 canvas.addEventListener("mousemove", (e) => {
@@ -153,12 +140,11 @@ const circleFactory = new CircleFactory(
 
 // Peg Board Array Initiator function. Builds the instances of each peg within the peg board array
 function initPegArray(num, radius) {
-	const widthBetween = innerWidth / num;
+	const widthBetween = 0.9 * (innerWidth / num);
 	const heightBetween = innerHeight / num;
 	const pegArray = [];
-	let offset = -widthBetween / 2;
+	let offset = 0;
 	for (let i = 0; i < num; i++) {
-		offset += widthBetween / 2;
 		for (let j = 0; j <= num; j++) {
 			pegArray.push(
 				new Peg(
@@ -172,7 +158,11 @@ function initPegArray(num, radius) {
 				)
 			);
 		}
-		offset -= widthBetween;
+		if (i % 2 == 0) {
+			offset += widthBetween / 2;
+		} else {
+			offset -= widthBetween / 2;
+		}
 	}
 	return pegArray;
 }
@@ -260,12 +250,14 @@ function hasCollided(circle, peg) {
 	) {
 		//do this...
 		peg.color = "red";
+
 		peg.showText = true;
 		let angle = computeAngle(circle.x, circle.y, peg.x, peg.y);
 		resolveCollision(circle, peg, angle);
 		sequenceSum += peg.number;
 	} else {
 		// if there is not a collision, then reset color back to default color...
+
 		peg.color = "blue";
 	}
 }
