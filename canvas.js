@@ -2,14 +2,16 @@
 const PEG_COLOR = "black";
 const CIRCLE_RADIUS = 40;
 const PEG_RADIUS = 20;
-const sequenceArray = [];
+let sequenceSum = 0;
 const DAMPER = 0.9;
 const PEG_NUM = 5;
 const XSTART = innerWidth / 2 + 10;
 const YSTART = CIRCLE_RADIUS + 1;
 const CIRCLE_MASS = 0.1;
+const CANVAS_COLOR = "black";
 let isActive = true;
 let mousePos;
+const MAX_NUM = 20;
 
 //gravity globals
 let isGravityEnabled = false;
@@ -22,41 +24,29 @@ const ctx = canvas.getContext("2d");
 
 //IIFE for initializing the canvas settings on load
 (function initCanvas() {
-	canvas.width = window.innerWidth;
-	canvas.height = window.innerHeight;
+	canvas.width = innerWidth;
+	canvas.height = innerHeight;
 	canvas.style.width = "100%";
 	canvas.style.height = "100%";
-	canvas.width = canvas.offsetWidth;
-	canvas.height = canvas.offsetHeight;
 	ctx.font = "30px Arial";
 })();
+
+function resizeCanvas() {
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+}
+
+window.onresize = function () {
+	console.log("resizing");
+	resizeCanvas();
+	drawCanvas();
+};
 
 // event listeners
 canvas.addEventListener("mousemove", (e) => {
 	mousePos = e.screenX;
 });
 canvas.addEventListener("click", () => toggleGravity());
-
-// super class for any physical element within the canvas (ball and pegs)
-class CanvasEntity {
-	constructor(x, y, radius) {
-		this.x = x;
-		this.y = y;
-		this.radius = radius;
-	}
-	set(x) {
-		this.x = x;
-	}
-	set(y) {
-		this.y = y;
-	}
-	set(radius) {
-		this.radius = radius;
-	}
-	draw() {
-		console.log("this element does not have a concrete render method");
-	}
-}
 
 //gravity toggler helper function
 function toggleGravity() {
@@ -69,6 +59,14 @@ function toggleGravity() {
 	}
 }
 /* ------------------------------------- CLASSES ---------------------------------------- */
+// Canvas Entity super class for any physical element within the canvas (ball and pegs + anything else we might add later)
+class CanvasEntity {
+	constructor(x, y, radius) {
+		this.x = x;
+		this.y = y;
+		this.radius = radius;
+	}
+}
 
 //Circle class (extends canvas entity)
 class Circle extends CanvasEntity {
@@ -79,9 +77,6 @@ class Circle extends CanvasEntity {
 		this.dy = 0;
 	}
 
-	set(mass) {
-		this.mass = mass;
-	}
 	draw() {
 		ctx.beginPath();
 		ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
@@ -100,7 +95,6 @@ class Circle extends CanvasEntity {
 		if (this.y + this.radius >= innerHeight || this.y - this.radius < 0) {
 			this.dy = -this.dy;
 		}
-
 		this.dy += gravity * this.mass;
 	}
 }
@@ -168,13 +162,13 @@ function initPegArray(num, radius) {
 		for (let j = 0; j <= num; j++) {
 			pegArray.push(
 				new Peg(
-					//order of i and j matters. switched here so that the arrangement offsets correctly
+					//order of i and j here matters... switched here so that the arrangement offsets correctly
 					j * widthBetween + widthBetween / 2 + offset,
 					i * heightBetween + heightBetween / 2 + CIRCLE_RADIUS * 2,
 					radius,
 
-					//creates random ints between 1-9 for each peg
-					Math.floor(Math.random() * 9 + 1)
+					//creates random ints between 1-9 for number attribute within each peg
+					Math.floor(Math.random() * MAX_NUM + 1)
 				)
 			);
 		}
@@ -206,7 +200,7 @@ renderPegArray(pegArray, circle);
 
 function refreshCanvas() {
 	ctx.clearRect(0, 0, innerWidth, innerHeight);
-	ctx.fillStyle = "black";
+	ctx.fillStyle = CANVAS_COLOR;
 	ctx.fillRect(0, 0, innerWidth, innerWidth);
 }
 function animate() {
@@ -217,8 +211,8 @@ function animate() {
 
 	//if the ball reaches the bottom of the canvas, then break out of the animation loop and return/log the sequence array
 	if (circle.y + circle.radius > innerHeight) {
-		alert(sequenceArray);
-		return `YOUR SEQUENCE IS ${sequenceArray}`;
+		alert(sequenceSum);
+		return `YOUR SEQUENCE IS ${sequenceSum}`;
 	}
 
 	//refreshes the canvas between renders
@@ -226,15 +220,10 @@ function animate() {
 
 	//conditional for circle state before gravity is enabled
 	if (!isGravityEnabled) {
-		/*
-
-		TODO: circle position is controlled by event listener mouse scroll 
-
-		*/
 		circle.x = mousePos;
 	}
 
-	//update and animate the circle
+	//draw and update the circle in DOM
 	circle.draw();
 	circle.update();
 
@@ -252,6 +241,7 @@ function computeDistance(x1, y1, x2, y2) {
 	//X and Y distances between point 1 and point 2
 	let xDistance = x2 - x1;
 	let yDistance = y2 - y1;
+
 	//Hypotenuse between point 1 and point 2
 	return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
 }
@@ -273,18 +263,18 @@ function hasCollided(circle, peg) {
 		peg.showText = true;
 		let angle = computeAngle(circle.x, circle.y, peg.x, peg.y);
 		resolveCollision(circle, peg, angle);
-		sequenceArray.push(peg.number);
+		sequenceSum += peg.number;
 	} else {
-		// if there is not a collision, then do this...
+		// if there is not a collision, then reset color back to default color...
 		peg.color = "blue";
 	}
 }
 
 /* ------------------------------------- PHYSICS IMPLEMENTATION ---------------------------------------- */
 
-//rotater function is a helper function to simplify the "Newtonian 1D momentum" equations
+//rotater function: a helper function to simplify the "Newtonian 1D momentum" equations
 function rotate(dx, dy, angle) {
-	//returns velocity vector projected onto the x dimension
+	//returns object containing velocity vector projected onto the x axis
 	return {
 		x: dx * Math.cos(angle) - dy * Math.sin(angle),
 		y: dx * Math.sin(angle) + dy * Math.cos(angle),
@@ -305,7 +295,7 @@ function resolveCollision(circle, peg, angle) {
 	const m1 = circle.mass;
 	const m2 = peg.mass;
 
-	//prevent circle overlapp
+	//conditional prevents circle overlapping bug
 	if (xVelocityDiff * xDist + yVelocityDiff * yDist >= 0) {
 		//circle and peg velocity objects after 1 dimensional projection
 		const u1 = rotate(circle.dx, circle.dy, angle);
@@ -325,11 +315,11 @@ function resolveCollision(circle, peg, angle) {
 		const vResult1 = rotate(v1.x, v1.y, -angle);
 		const vResult2 = rotate(v2.x, v2.y, -angle);
 
-		//swap circle velocities for realistic bounce effect
+		//swap circle velocities for realistic bounce effect (damper added so that motion converges)
 		circle.dx = vResult1.x * DAMPER;
 		circle.dy = vResult1.y * DAMPER;
 
-		//note: the sim still works without multiplying peg velocity by zero. including *0 to be safe
+		//Peg velocity update (note: the sim still works without multiplying peg velocity by zero. including *0 to be safe)
 		peg.dx = vResult2.x * 0;
 		peg.dy = vResult2.y * 0;
 	}
