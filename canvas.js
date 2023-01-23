@@ -1,10 +1,10 @@
 //Global constants and variables
 const PEG_COLOR = "black";
-const CIRCLE_RADIUS = 30;
-const PEG_RADIUS = 10;
+const CIRCLE_RADIUS = 40;
+const PEG_RADIUS = 15;
 let sequenceSum = 0;
-const DAMPER = 0.9;
-const PEG_NUM = 8;
+const DAMPER = 0.95;
+const PEG_NUM = 4;
 const XSTART = innerWidth / 2 + 10;
 const YSTART = CIRCLE_RADIUS + 1;
 const CIRCLE_MASS = 0.1;
@@ -12,6 +12,7 @@ const CANVAS_COLOR = "black";
 let isActive = true;
 let mousePos;
 const MAX_NUM = 50; // maximum value of number attribute within a peg
+const SPEED_LIMIT = 3;
 
 //gravity globals
 let isGravityEnabled = false;
@@ -19,7 +20,6 @@ let gravity = 0;
 
 // Canvas Setup
 const canvas = document.querySelector("canvas");
-const container = document.querySelector(".canvas-container");
 const ctx = canvas.getContext("2d");
 
 //IIFE for initializing the canvas settings on load
@@ -62,12 +62,13 @@ class Circle extends CanvasEntity {
 		this.mass = mass;
 		this.dx = 0;
 		this.dy = 0;
+		this.color = "white";
 	}
 
 	draw() {
 		ctx.beginPath();
 		ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-		ctx.fillStyle = "white";
+		ctx.fillStyle = this.color;
 		ctx.fill();
 	}
 
@@ -83,6 +84,20 @@ class Circle extends CanvasEntity {
 			this.dy = -this.dy;
 		}
 		this.dy += gravity * this.mass;
+	}
+	getAngle() {
+		return Math.atan2(this.dy / this.dx);
+	}
+	getSpeed() {
+		return Math.sqrt(Math.pow(this.dx, 2) + Math.pow(this.dy, 2));
+	}
+
+	limitSpeed(speedLimit) {
+		if (this.getSpeed() > speedLimit) {
+			let angle = Math.tan(this.dy / this.dx);
+			this.dx = speedLimit * Math.cos(angle);
+			this.dy = speedLimit * Math.sin(angle);
+		}
 	}
 }
 
@@ -218,6 +233,12 @@ function animate() {
 
 	//render the peg states with respect to the circle object
 	renderPegArray(pegArray, circle);
+	console.log(circle.getSpeed());
+	if (circle.getSpeed() > SPEED_LIMIT) {
+		circle.color = "red";
+	} else {
+		circle.color = "white";
+	}
 
 	//perform browser rendering of frame
 	requestAnimationFrame(animate);
@@ -253,10 +274,18 @@ function hasCollided(circle, peg) {
 		peg.showText = true;
 		let angle = computeAngle(circle.x, circle.y, peg.x, peg.y);
 		resolveCollision(circle, peg, angle);
+		let overlap =
+			CIRCLE_RADIUS +
+			PEG_RADIUS -
+			computeDistance(circle.x, circle.y, peg.x, peg.y);
+
+		let overlapShift = [overlap * Math.cos(angle), overlap * Math.sin(angle)];
+		circle.x += overlapShift[0];
+		circle.y += overlapShift[1];
 		sequenceSum += peg.number;
+		console.log(peg.number);
 	} else {
 		// if there is not a collision, then reset color back to default color...
-
 		peg.color = "blue";
 	}
 }
@@ -287,7 +316,7 @@ function resolveCollision(circle, peg, angle) {
 	const m2 = peg.mass;
 
 	//conditional prevents circle overlapping bug
-	if (xVelocityDiff * xDist + yVelocityDiff * yDist >= 0) {
+	if (xVelocityDiff * xDist + yVelocityDiff * yDist > 0) {
 		//circle and peg velocity objects after 1 dimensional projection
 		const u1 = rotate(circle.dx, circle.dy, angle);
 		const u2 = rotate(peg.dx, peg.dy, angle);
