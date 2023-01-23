@@ -201,7 +201,10 @@ function animate() {
 
 	//if the ball reaches the bottom of the canvas, then break out of the animation loop and return/log the sequence array
 	if (circle.y + circle.radius > innerHeight) {
-		return sequenceSum;
+		isActive = false;
+		queryDb(sequenceSum);
+		delete circle;
+		return;
 	}
 
 	//refreshes the canvas between renders
