@@ -107,6 +107,7 @@ class Peg extends CanvasEntity {
 		ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
 		ctx.fillStyle = this.color;
 		ctx.fill();
+		ctx.fillText(this.number, this.x - 2, this.y + 25);
 	}
 }
 
