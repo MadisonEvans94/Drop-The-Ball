@@ -5,6 +5,7 @@ const PEG_RADIUS = 10;
 const sequenceArray = [];
 const DAMPER = 0.9;
 const PEG_NUM = 5;
+let sum = 0;
 
 // Canvas Setup
 const canvas = document.querySelector("canvas");
@@ -82,10 +83,14 @@ class Circle extends CanvasEntity {
 		if (this.x + this.radius >= innerWidth || this.x - this.radius < 0) {
 			this.dx = -this.dx;
 		}
-		if (this.y + this.radius >= innerHeight || this.y - this.radius < 0) {
+		//top collision
+		if (this.y - this.radius < 0) {
 			this.dy = -this.dy;
 		}
-
+		if (this.y + this.radius >= canvas.height) {
+			isActive = false;
+			delete this;
+		}
 		//gravity
 		this.dy += 0.1;
 	}
@@ -175,7 +180,8 @@ function hasCollided(circle, peg) {
 		peg.color = "red";
 		let angle = computeAngle(circle.x, circle.y, peg.x, peg.y);
 		resolveCollision(circle, peg, angle);
-
+		sum += peg.number;
+		console.log(sum);
 		sequenceArray.push(peg.number);
 	} else {
 		peg.color = "blue";
@@ -223,7 +229,10 @@ function resolveCollision(circle, peg, angle) {
 
 //animation loop
 function animate() {
-	if (!isActive) return;
+	if (!isActive) {
+		queryDb(sum);
+		return;
+	};
 
 	ctx.clearRect(0, 0, innerWidth, innerHeight);
 	circle.render();
