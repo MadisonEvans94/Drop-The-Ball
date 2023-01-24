@@ -188,7 +188,6 @@ function resetPegArray(pegArray) {
 		peg.contactFlag = false;
 		peg.showText = false;
 	});
-	console.log("array reset");
 }
 
 // Peg Board Rendering function. Renders peg array to DOM. Note that function requires reference to circle object in order to handle collision functions
@@ -212,15 +211,8 @@ circle.draw();
 renderPegArray(pegArray, circle);
 /* ------------------------------------- RESET FUNCTIONALITY --------------------------------*/
 //TODO: make reset functionality
-/**
- * Things to reset:
- * ball position
- * gravity value
- * isGravityActivated
- * peg number reshuffle
- * reset all peg contactFlags to false
- */
 
+// Resets the board and reshuffles peg numbers
 function reset() {
 	isGravityEnabled = false;
 	gravity = 0;
@@ -230,8 +222,6 @@ function reset() {
 	circle.dy = 0;
 	resetPegArray(pegArray);
 	animate();
-
-	console.log("board reset");
 }
 /* ------------------------------------- ANIMATION LOOP ----------------------------------------------- */
 function refreshCanvas() {
@@ -301,7 +291,6 @@ function hasCollided(circle, peg) {
 			resolveCollision(circle, peg, angle);
 
 			sequenceSum += peg.number;
-			console.log(peg.number);
 		}
 		peg.contactFlag = true;
 	} else {
