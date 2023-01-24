@@ -34,7 +34,6 @@ const rightWall = (innerWidth - canvas.width) / 2 + canvas.width;
 // event listeners
 document.addEventListener("mousemove", (e) => {
 	mousePos = e.screenX;
-	console.log(mousePos);
 });
 canvas.addEventListener("click", () => toggleGravity());
 
@@ -255,6 +254,11 @@ function animate() {
 	//conditional for circle state before gravity is enabled
 	if (!isGravityEnabled) {
 		circle.x = mousePos - canvas.width / 2;
+		if (circle.x + circle.radius > canvas.width) {
+			circle.x = canvas.width - circle.radius;
+		} else if (circle.x - circle.radius < 0) {
+			circle.x = circle.radius;
+		}
 	}
 
 	//draw and update the circle in DOM
