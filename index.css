@@ -8,14 +8,15 @@
 
 body {
 	display: flex;
+
 	justify-content: center;
+
 	align-items: center;
 	height: 100vh;
 	background: linear-gradient(to bottom, #0077be, #ee5914);
 }
 
 canvas {
-	background-color: rgb(19, 238, 12);
 	width: 100%;
 	height: 100%;
 	border: none;
@@ -33,9 +34,6 @@ canvas {
 	position: absolute;
 	border: 5px solid rgb(41, 119, 46);
 	box-shadow: 0px 0px 10px rgb(144, 3, 17);
-	/* width: xpx;
-	height: ypx;
-	border: xpx solid #color; */
 }
 
 /* Peg styles */
@@ -45,9 +43,6 @@ canvas {
 	transform: rotate(45deg) scale(1);
 	background: linear-gradient(to right, #ff7e5f, #feb47b);
 	padding: 5px;
-	/* width: xpx;
-	height: ypx;
-	border: xpx solid #color; */
 }
 
 /* Number styles */

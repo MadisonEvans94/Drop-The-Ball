@@ -4,11 +4,11 @@ const CIRCLE_RADIUS = 40;
 const PEG_RADIUS = 15;
 let sequenceSum = 0;
 const DAMPER = 0.95;
-const PEG_NUM = 2;
+const PEG_NUM = 5;
 const XSTART = innerWidth / 2 + 10;
 const YSTART = CIRCLE_RADIUS + 1;
-const CIRCLE_MASS = 0.1;
-const CANVAS_COLOR = "black";
+const CIRCLE_MASS = 0.3;
+const CANVAS_COLOR = "rgba(0,0,0,0)";
 let mousePos;
 const MAX_NUM = 50; // maximum value of number attribute within a peg
 const SPEED_LIMIT = 3;
@@ -104,13 +104,18 @@ class Circle extends CanvasEntity {
 class Peg extends CanvasEntity {
 	constructor(x, y, radius, number, mass = 10) {
 		super(x, y, radius);
-		this.color = "blue";
+		this.color = "black";
 		this.number = number;
 		this.mass = mass;
 		this.dx = 0;
 		this.dy = 0;
 		this.showText = false;
 		this.contactFlag = false;
+		this.animationCounter = 0;
+	}
+	showNumber() {
+		this.animationCounter = 0;
+		this.showText = true;
 	}
 
 	draw() {
@@ -118,14 +123,15 @@ class Peg extends CanvasEntity {
 		ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
 		ctx.fillStyle = this.color;
 		ctx.fill();
-		if (this.showText) {
+		if (this.showText && this.animationCounter < 50) {
 			ctx.fillStyle = "white";
-			ctx.fillText(
-				`${this.number}`,
-				this.x - this.radius / 3,
-				this.y + this.radius / 2
-			);
+			ctx.fillText(`+${this.number}`, this.x, this.y - this.animationCounter);
+			this.animationCounter++;
 		}
+
+		// if (this.showText) {
+		// 	this.displayNumber();
+		// }
 	}
 }
 
@@ -210,7 +216,6 @@ let pegArray = initPegArray(PEG_NUM, PEG_RADIUS);
 circle.draw();
 renderPegArray(pegArray, circle);
 /* ------------------------------------- RESET FUNCTIONALITY --------------------------------*/
-//TODO: make reset functionality
 
 // Resets the board and reshuffles peg numbers
 function reset() {
@@ -288,16 +293,15 @@ function hasCollided(circle, peg) {
 			//do this...
 			peg.color = "red";
 
-			peg.showText = true;
 			let angle = computeAngle(circle.x, circle.y, peg.x, peg.y);
 			resolveCollision(circle, peg, angle);
-
+			peg.showNumber();
 			sequenceSum += peg.number;
 		}
 		peg.contactFlag = true;
 	} else {
 		// if there is not a collision, then reset color back to default color...
-		peg.color = "blue";
+		peg.color = "black";
 		peg.contactFlag = false;
 	}
 }
