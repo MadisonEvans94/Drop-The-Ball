@@ -85,6 +85,7 @@ class Circle extends CanvasEntity {
 		}
 		this.dy += gravity * this.mass;
 	}
+
 	getAngle() {
 		return Math.atan2(this.dy / this.dx);
 	}
@@ -266,6 +267,7 @@ function hasCollided(circle, peg) {
 		computeDistance(circle.x, circle.y, peg.x, peg.y) <
 		circle.radius + peg.radius
 	) {
+		// and if peg hasn't flagged a collision yet
 		if (peg.contactFlag === false) {
 			//do this...
 			peg.color = "red";
