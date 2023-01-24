@@ -272,16 +272,8 @@ function hasCollided(circle, peg) {
 		peg.showText = true;
 		let angle = computeAngle(circle.x, circle.y, peg.x, peg.y);
 		resolveCollision(circle, peg, angle);
-		let overlap =
-			CIRCLE_RADIUS +
-			PEG_RADIUS -
-			computeDistance(circle.x, circle.y, peg.x, peg.y);
 
-		let overlapShift = [overlap * Math.cos(angle), overlap * Math.sin(angle)];
-		circle.x += overlapShift[0];
-		circle.y += overlapShift[1];
 		sequenceSum += peg.number;
-		console.log(peg.number);
 	} else {
 		// if there is not a collision, then reset color back to default color...
 		peg.color = "blue";
