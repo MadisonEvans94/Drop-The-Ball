@@ -6,10 +6,6 @@ let sequenceSum = 0;
 const DAMPER = 0.95;
 const PEG_NUM = 5;
 
-const img = document.createElement("img");
-img.src = "./images/caret.svg";
-document.body.appendChild(img);
-
 const CIRCLE_MASS = 0.3;
 const CANVAS_COLOR = "rgba(0,0,0,0)";
 let mousePos;
@@ -35,8 +31,9 @@ const YSTART = CIRCLE_RADIUS + 1;
 const leftWall = (innerWidth - canvas.width) / 2;
 const rightWall = (innerWidth - canvas.width) / 2 + canvas.width;
 // event listeners
-document.addEventListener("mousemove", (e) => {
-	mousePos = e.screenX;
+canvas.addEventListener("mousemove", (e) => {
+	mousePos = e.offsetX;
+	console.log(mousePos);
 });
 document.addEventListener("click", () => toggleGravity());
 
@@ -248,7 +245,7 @@ function animate() {
 
 	//conditional for circle state before gravity is enabled
 	if (!isGravityEnabled) {
-		circle.x = mousePos * (canvas.width / (innerWidth * 0.6)) - 250;
+		circle.x = mousePos * 1;
 		if (circle.x + circle.radius > canvas.width) {
 			circle.x = canvas.width - circle.radius;
 		} else if (circle.x - circle.radius < 0) {
