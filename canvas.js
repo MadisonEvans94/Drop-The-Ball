@@ -1,12 +1,11 @@
 //Global constants and variables
 const PEG_COLOR = "black";
-const CIRCLE_RADIUS = 40;
-const PEG_RADIUS = 15;
+const CIRCLE_RADIUS = 30;
+const PEG_RADIUS = 10;
 let sequenceSum = 0;
 const DAMPER = 0.95;
 const PEG_NUM = 5;
-const XSTART = innerWidth / 2 + 10;
-const YSTART = CIRCLE_RADIUS + 1;
+
 const CIRCLE_MASS = 0.3;
 const CANVAS_COLOR = "rgba(0,0,0,0)";
 let mousePos;
@@ -23,14 +22,19 @@ const ctx = canvas.getContext("2d");
 
 //IIFE for initializing the canvas settings on load
 (function initCanvas() {
-	canvas.width = innerWidth;
-	canvas.height = innerHeight;
+	canvas.width = 800;
+	canvas.height = 800;
 	ctx.font = "30px Arial";
 })();
 
+const XSTART = canvas.width / 2 + 10;
+const YSTART = CIRCLE_RADIUS + 1;
+const leftWall = (innerWidth - canvas.width) / 2;
+const rightWall = (innerWidth - canvas.width) / 2 + canvas.width;
 // event listeners
 canvas.addEventListener("mousemove", (e) => {
 	mousePos = e.screenX;
+	console.log(mousePos);
 });
 canvas.addEventListener("click", () => toggleGravity());
 
@@ -76,7 +80,7 @@ class Circle extends CanvasEntity {
 		this.y += this.dy;
 
 		// wall bounces
-		if (this.x + this.radius >= innerWidth || this.x - this.radius < 0) {
+		if (this.x + this.radius >= canvas.width || this.x - this.radius < 0) {
 			this.dx = -this.dx;
 		}
 		if (this.y - this.radius < 0) {
@@ -161,12 +165,12 @@ const circleFactory = new CircleFactory(
 
 // Peg Board Array Initiator function. Builds the instances of each peg within the peg board array
 function initPegArray(num, radius) {
-	const widthBetween = 0.9 * (innerWidth / num);
-	const heightBetween = innerHeight / num;
+	const widthBetween = 0.9 * (canvas.width / num);
+	const heightBetween = canvas.height / num;
 	const pegArray = [];
 	let offset = 0;
-	for (let i = 0; i < num; i++) {
-		for (let j = 0; j <= num; j++) {
+	for (let i = 0; i < num - 1; i++) {
+		for (let j = 0; j < num; j++) {
 			pegArray.push(
 				new Peg(
 					//order of i and j here matters... switched here so that the arrangement offsets correctly
@@ -234,12 +238,12 @@ function reset() {
 function refreshCanvas() {
 	ctx.clearRect(0, 0, innerWidth, innerHeight);
 	ctx.fillStyle = CANVAS_COLOR;
-	ctx.fillRect(0, 0, innerWidth, innerWidth);
+	ctx.fillRect(0, 0, innerWidth, innerHeight);
 }
 function animate() {
 	console.log("animation");
 	//if the ball reaches the bottom of the canvas, then break out of the animation loop and return/log the sequence array
-	if (circle.y - 2 * circle.radius > innerHeight) {
+	if (circle.y - 2 * circle.radius > canvas.height) {
 		queryDb(sequenceSum);
 		//delete circle;
 		return;
