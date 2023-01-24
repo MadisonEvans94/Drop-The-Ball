@@ -80,12 +80,17 @@ class Circle extends CanvasEntity {
 		if (this.x + this.radius >= innerWidth || this.x - this.radius < 0) {
 			this.dx = -this.dx;
 		}
-		if (this.y + this.radius >= innerHeight || this.y - this.radius < 0) {
+		if (this.y - this.radius < 0) {
 			this.dy = -this.dy;
 		}
 		this.dy += gravity * this.mass;
 	}
-
+	reset() {
+		this.x = XSTART;
+		this.y = YSTART;
+		this.dx = 0;
+		this.dy = 0;
+	}
 	getAngle() {
 		return Math.atan2(this.dy / this.dx);
 	}
@@ -203,8 +208,24 @@ let pegArray = initPegArray(PEG_NUM, PEG_RADIUS);
 
 circle.draw();
 renderPegArray(pegArray, circle);
-/* ------------------------------------- ANIMATION LOOP ----------------------------------------------- */
+/* ------------------------------------- RESET FUNCTIONALITY --------------------------------*/
+//TODO: make reset functionality
+/**
+ * Things to reset:
+ * ball position
+ * gravity value
+ * isGravityActivated
+ * peg number reshuffle
+ * reset all peg contactFlags to false
+ */
 
+function reset() {
+	const circle = circleFactory.build();
+	animate();
+
+	console.log("board reset");
+}
+/* ------------------------------------- ANIMATION LOOP ----------------------------------------------- */
 function refreshCanvas() {
 	ctx.clearRect(0, 0, innerWidth, innerHeight);
 	ctx.fillStyle = CANVAS_COLOR;
@@ -217,7 +238,7 @@ function animate() {
 	}
 
 	//if the ball reaches the bottom of the canvas, then break out of the animation loop and return/log the sequence array
-	if (circle.y + circle.radius > innerHeight) {
+	if (circle.y - 2 * circle.radius > innerHeight) {
 		isActive = false;
 		queryDb(sequenceSum);
 		delete circle;

@@ -1,84 +1,82 @@
 *::before,
 *::after,
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
 }
 
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: linear-gradient(to bottom, #0077be, #ee5914);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	background: linear-gradient(to bottom, #0077be, #ee5914);
 }
 
 canvas {
-    background-color: rgb(19, 238, 12);
-    width: 100%;
-    height: 100%;
-    border: none;
+	background-color: rgb(19, 238, 12);
+	width: 100%;
+	height: 100%;
+	border: none;
 }
 
 .canvas-container {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    margin: 50px;
+	width: 100%;
+	height: 100%;
+	position: relative;
+	margin: 50px;
 }
 
 /* Circle styles */
 .circle {
-    position: absolute;
-    border: 5px solid rgb(41, 119, 46);
-    box-shadow: 0px 0px 10px rgb(144, 3, 17);
-    width: xpx;
-    height: ypx;
-    border: xpx solid #color;
+	position: absolute;
+	border: 5px solid rgb(41, 119, 46);
+	box-shadow: 0px 0px 10px rgb(144, 3, 17);
+	/* width: xpx;
+	height: ypx;
+	border: xpx solid #color; */
 }
 
 /* Peg styles */
 .peg {
-    position: absolute;
-    transition: all 0.3s ease-in-out;
-    transform: rotate(45deg) scale(1);
-    background: linear-gradient(to right, #ff7e5f, #feb47b);
-    padding: 5px;
-    width: xpx;
-    height: ypx;
-    border: xpx solid #color;
+	position: absolute;
+	transition: all 0.3s ease-in-out;
+	transform: rotate(45deg) scale(1);
+	background: linear-gradient(to right, #ff7e5f, #feb47b);
+	padding: 5px;
+	/* width: xpx;
+	height: ypx;
+	border: xpx solid #color; */
 }
 
 /* Number styles */
 .number {
-    position: absolute;
-    font-size: 20px;
-    color: rgb(239, 120, 9);
-    font-family: Arial, sans-serif;
-    text-align: center;
+	position: absolute;
+	font-size: 20px;
+	color: rgb(239, 120, 9);
+	font-family: Arial, sans-serif;
+	text-align: center;
 }
 
 /* When gravity is enabled */
 .gravity-enabled .peg {
-    transform: scale(1.1);
-    background-color: #ff0000;
+	transform: scale(1.1);
+	background-color: #ff0000;
 }
 
 /* Sequence sum styles */
 .sequence-sum {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    font-size: 20px;
-    color: #fff;
-    font-family: Arial, sans-serif;
-    text-shadow: 2px 2px 2px rgb(233, 18, 18);
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	font-size: 20px;
+	color: #fff;
+	font-family: Arial, sans-serif;
+	text-shadow: 2px 2px 2px rgb(233, 18, 18);
 }
 
 /* Add a border around the peg when the mouse is over it */
 .peg:hover {
-    border: 5px solid rgb(240, 77, 12);
+	border: 5px solid rgb(240, 77, 12);
 }
-
-
