@@ -5,6 +5,7 @@ function queryDb(number) {
 	getJSON(`http://numbersapi.com/${number}?json`).then(renderResult);
 	getJSON(`http://numbersapi.com/${number}/year?json`).then(renderResult);
 	getJSON(`http://numbersapi.com/${number}/math?json`).then(renderResult);
+	insertResetButton();
 }
 
 function getJSON(url) {
