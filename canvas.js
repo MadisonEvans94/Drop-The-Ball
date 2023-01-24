@@ -215,12 +215,14 @@ renderPegArray(pegArray, circle);
 // Resets the board and reshuffles peg numbers
 function reset() {
 	isGravityEnabled = false;
+	sequenceSum = 0;
 	gravity = 0;
 	circle.x = XSTART;
 	circle.y = YSTART;
 	circle.dx = 0;
 	circle.dy = 0;
 	resetPegArray(pegArray);
+	resetResult();
 	animate();
 }
 /* ------------------------------------- ANIMATION LOOP ----------------------------------------------- */

@@ -37,3 +37,8 @@ function insertResultsHeaderIfNotPresent() {
 		resultDiv.append(heading);
 	}
 }
+
+// helper function to clear the results div upon reset
+function resetResult() {
+	resultDiv.innerHTML = "";
+}
