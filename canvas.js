@@ -27,15 +27,14 @@ const ctx = canvas.getContext("2d");
 })();
 
 const XSTART = canvas.width / 2 + 10;
-const YSTART = CIRCLE_RADIUS + 1;
+const YSTART = CIRCLE_RADIUS;
 const leftWall = (innerWidth - canvas.width) / 2;
 const rightWall = (innerWidth - canvas.width) / 2 + canvas.width;
 // event listeners
 canvas.addEventListener("mousemove", (e) => {
 	mousePos = e.offsetX;
-	console.log(mousePos);
 });
-document.addEventListener("click", () => toggleGravity());
+canvas.addEventListener("click", () => toggleGravity());
 
 //gravity toggler helper function
 function toggleGravity() {
@@ -86,6 +85,12 @@ class Circle extends CanvasEntity {
 			this.dy = -this.dy;
 		}
 		this.dy += gravity * this.mass;
+	}
+	reset() {
+		this.x = XSTART;
+		this.y = YSTART;
+		this.dy = 0;
+		this.dx = 0;
 	}
 	getAngle() {
 		return Math.atan2(this.dy / this.dx);
@@ -214,13 +219,10 @@ renderPegArray(pegArray, circle);
 
 // Resets the board and reshuffles peg numbers
 function reset() {
-	isGravityEnabled = false;
-	sequenceSum = 0;
 	gravity = 0;
-	circle.x = XSTART;
-	circle.y = YSTART;
-	circle.dx = 0;
-	circle.dy = 0;
+	sequenceSum = 0;
+	isGravityEnabled = false;
+	circle.reset();
 	resetPegArray(pegArray);
 	resetResult();
 	animate();
