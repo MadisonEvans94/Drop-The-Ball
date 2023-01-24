@@ -5,6 +5,7 @@ function queryDb(number) {
 	getJSON(`http://numbersapi.com/${number}?json`).then(renderResult);
 	getJSON(`http://numbersapi.com/${number}/year?json`).then(renderResult);
 	getJSON(`http://numbersapi.com/${number}/math?json`).then(renderResult);
+	insertResetButton();
 }
 
 function getJSON(url) {
@@ -21,6 +22,7 @@ function getJSON(url) {
 
 function renderResult(data) {
 	insertResultsHeaderIfNotPresent();
+
 	if (data.found) {
 		const p = document.createElement("p");
 		p.className = "result";
@@ -35,4 +37,18 @@ function insertResultsHeaderIfNotPresent() {
 		heading.textContent = "Results";
 		resultDiv.append(heading);
 	}
+}
+
+function insertResetButton() {
+	const resetBtn = document.createElement("button");
+	resetBtn.className = "reset-btn";
+	resetBtn.addEventListener("click", () => {
+		reset();
+	});
+	resetBtn.textContent = "reset board";
+	resultDiv.append(resetBtn);
+}
+// helper function to clear the results div upon reset
+function resetResult() {
+	resultDiv.innerHTML = "";
 }
