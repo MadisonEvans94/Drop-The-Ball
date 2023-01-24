@@ -111,6 +111,7 @@ class Peg extends CanvasEntity {
 		this.dx = 0;
 		this.dy = 0;
 		this.showText = false;
+		this.contactFlag = false;
 	}
 
 	draw() {
@@ -236,7 +237,6 @@ function animate() {
 
 	//render the peg states with respect to the circle object
 	renderPegArray(pegArray, circle);
-	console.log(circle.getSpeed());
 
 	//perform browser rendering of frame
 	requestAnimationFrame(animate);
@@ -266,17 +266,22 @@ function hasCollided(circle, peg) {
 		computeDistance(circle.x, circle.y, peg.x, peg.y) <
 		circle.radius + peg.radius
 	) {
-		//do this...
-		peg.color = "red";
+		if (peg.contactFlag === false) {
+			//do this...
+			peg.color = "red";
 
-		peg.showText = true;
-		let angle = computeAngle(circle.x, circle.y, peg.x, peg.y);
-		resolveCollision(circle, peg, angle);
+			peg.showText = true;
+			let angle = computeAngle(circle.x, circle.y, peg.x, peg.y);
+			resolveCollision(circle, peg, angle);
 
-		sequenceSum += peg.number;
+			sequenceSum += peg.number;
+			console.log(peg.number);
+		}
+		peg.contactFlag = true;
 	} else {
 		// if there is not a collision, then reset color back to default color...
 		peg.color = "blue";
+		peg.contactFlag = false;
 	}
 }
 
