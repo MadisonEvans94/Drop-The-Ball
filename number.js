@@ -21,7 +21,6 @@ function getJSON(url) {
 }
 
 function renderResult(data) {
-	console.log(data);
 	insertResultsHeaderIfNotPresent();
 
 	if (data.found) {
