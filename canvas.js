@@ -1,7 +1,7 @@
 //Global constants and variables
 const PEG_COLOR = "black";
 const CIRCLE_RADIUS = 30;
-const PEG_RADIUS = 10;
+const PEG_RADIUS = 18;
 let sequenceSum = 0;
 const DAMPER = 0.95;
 const PEG_NUM = 5;
@@ -27,12 +27,12 @@ const ctx = canvas.getContext("2d");
 })();
 
 const XSTART = canvas.width / 2 + 10;
-const YSTART = CIRCLE_RADIUS + 1;
+const YSTART = CIRCLE_RADIUS;
 const leftWall = (innerWidth - canvas.width) / 2;
 const rightWall = (innerWidth - canvas.width) / 2 + canvas.width;
 // event listeners
-document.addEventListener("mousemove", (e) => {
-	mousePos = e.screenX;
+canvas.addEventListener("mousemove", (e) => {
+	mousePos = e.offsetX;
 });
 canvas.addEventListener("click", () => toggleGravity());
 
@@ -85,6 +85,12 @@ class Circle extends CanvasEntity {
 			this.dy = -this.dy;
 		}
 		this.dy += gravity * this.mass;
+	}
+	reset() {
+		this.x = XSTART;
+		this.y = YSTART;
+		this.dy = 0;
+		this.dx = 0;
 	}
 	getAngle() {
 		return Math.atan2(this.dy / this.dx);
@@ -213,13 +219,10 @@ renderPegArray(pegArray, circle);
 
 // Resets the board and reshuffles peg numbers
 function reset() {
-	isGravityEnabled = false;
-	sequenceSum = 0;
 	gravity = 0;
-	circle.x = XSTART;
-	circle.y = YSTART;
-	circle.dx = 0;
-	circle.dy = 0;
+	sequenceSum = 0;
+	isGravityEnabled = false;
+	circle.reset();
 	resetPegArray(pegArray);
 	resetResult();
 	animate();
@@ -244,7 +247,7 @@ function animate() {
 
 	//conditional for circle state before gravity is enabled
 	if (!isGravityEnabled) {
-		circle.x = mousePos - canvas.width / 2;
+		circle.x = mousePos * 1;
 		if (circle.x + circle.radius > canvas.width) {
 			circle.x = canvas.width - circle.radius;
 		} else if (circle.x - circle.radius < 0) {
