@@ -4,12 +4,11 @@ const CIRCLE_RADIUS = 40;
 const PEG_RADIUS = 15;
 let sequenceSum = 0;
 const DAMPER = 0.95;
-const PEG_NUM = 4;
+const PEG_NUM = 2;
 const XSTART = innerWidth / 2 + 10;
 const YSTART = CIRCLE_RADIUS + 1;
 const CIRCLE_MASS = 0.1;
 const CANVAS_COLOR = "black";
-let isActive = true;
 let mousePos;
 const MAX_NUM = 50; // maximum value of number attribute within a peg
 const SPEED_LIMIT = 3;
@@ -84,12 +83,6 @@ class Circle extends CanvasEntity {
 			this.dy = -this.dy;
 		}
 		this.dy += gravity * this.mass;
-	}
-	reset() {
-		this.x = XSTART;
-		this.y = YSTART;
-		this.dx = 0;
-		this.dy = 0;
 	}
 	getAngle() {
 		return Math.atan2(this.dy / this.dx);
@@ -189,6 +182,15 @@ function initPegArray(num, radius) {
 	return pegArray;
 }
 
+function resetPegArray(pegArray) {
+	pegArray.forEach((peg) => {
+		peg.number = Math.floor(Math.random() * MAX_NUM + 1);
+		peg.contactFlag = false;
+		peg.showText = false;
+	});
+	console.log("array reset");
+}
+
 // Peg Board Rendering function. Renders peg array to DOM. Note that function requires reference to circle object in order to handle collision functions
 function renderPegArray(pegArray, circle) {
 	pegArray.forEach((peg) => {
@@ -220,7 +222,13 @@ renderPegArray(pegArray, circle);
  */
 
 function reset() {
-	const circle = circleFactory.build();
+	isGravityEnabled = false;
+	gravity = 0;
+	circle.x = XSTART;
+	circle.y = YSTART;
+	circle.dx = 0;
+	circle.dy = 0;
+	resetPegArray(pegArray);
 	animate();
 
 	console.log("board reset");
@@ -232,16 +240,11 @@ function refreshCanvas() {
 	ctx.fillRect(0, 0, innerWidth, innerWidth);
 }
 function animate() {
-	//if the user changes isActive to falsy, then break out of the animation loop
-	if (!isActive) {
-		return;
-	}
-
+	console.log("animation");
 	//if the ball reaches the bottom of the canvas, then break out of the animation loop and return/log the sequence array
 	if (circle.y - 2 * circle.radius > innerHeight) {
-		isActive = false;
 		queryDb(sequenceSum);
-		delete circle;
+		//delete circle;
 		return;
 	}
 
