@@ -22,6 +22,7 @@ function getJSON(url) {
 function renderResult(data) {
 	console.log(data);
 	insertResultsHeaderIfNotPresent();
+
 	if (data.found) {
 		const p = document.createElement("p");
 		p.className = "result";
@@ -38,6 +39,15 @@ function insertResultsHeaderIfNotPresent() {
 	}
 }
 
+function insertResetButton() {
+	const resetBtn = document.createElement("button");
+	resetBtn.className = "reset-btn";
+	resetBtn.addEventListener("click", () => {
+		reset();
+	});
+	resetBtn.textContent = "reset board";
+	resultDiv.append(resetBtn);
+}
 // helper function to clear the results div upon reset
 function resetResult() {
 	resultDiv.innerHTML = "";

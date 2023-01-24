@@ -10,7 +10,6 @@ const CIRCLE_MASS = 0.3;
 const CANVAS_COLOR = "rgba(0,0,0,0)";
 let mousePos;
 const MAX_NUM = 50; // maximum value of number attribute within a peg
-const SPEED_LIMIT = 3;
 
 //gravity globals
 let isGravityEnabled = false;
@@ -92,14 +91,6 @@ class Circle extends CanvasEntity {
 	}
 	getSpeed() {
 		return Math.sqrt(Math.pow(this.dx, 2) + Math.pow(this.dy, 2));
-	}
-
-	limitSpeed(speedLimit) {
-		if (this.getSpeed() > speedLimit) {
-			let angle = Math.tan(this.dy / this.dx);
-			this.dx = speedLimit * Math.cos(angle);
-			this.dy = speedLimit * Math.sin(angle);
-		}
 	}
 }
 
