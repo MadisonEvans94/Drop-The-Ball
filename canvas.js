@@ -237,11 +237,6 @@ function animate() {
 	//render the peg states with respect to the circle object
 	renderPegArray(pegArray, circle);
 	console.log(circle.getSpeed());
-	if (circle.getSpeed() > SPEED_LIMIT) {
-		circle.color = "red";
-	} else {
-		circle.color = "white";
-	}
 
 	//perform browser rendering of frame
 	requestAnimationFrame(animate);
