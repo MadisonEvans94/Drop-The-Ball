@@ -6,6 +6,10 @@ let sequenceSum = 0;
 const DAMPER = 0.95;
 const PEG_NUM = 5;
 
+const img = document.createElement("img");
+img.src = "./images/caret.svg";
+document.body.appendChild(img);
+
 const CIRCLE_MASS = 0.3;
 const CANVAS_COLOR = "rgba(0,0,0,0)";
 let mousePos;
@@ -34,7 +38,7 @@ const rightWall = (innerWidth - canvas.width) / 2 + canvas.width;
 document.addEventListener("mousemove", (e) => {
 	mousePos = e.screenX;
 });
-canvas.addEventListener("click", () => toggleGravity());
+document.addEventListener("click", () => toggleGravity());
 
 //gravity toggler helper function
 function toggleGravity() {
@@ -244,7 +248,7 @@ function animate() {
 
 	//conditional for circle state before gravity is enabled
 	if (!isGravityEnabled) {
-		circle.x = mousePos - canvas.width / 2;
+		circle.x = mousePos * (canvas.width / (innerWidth * 0.6)) - 250;
 		if (circle.x + circle.radius > canvas.width) {
 			circle.x = canvas.width - circle.radius;
 		} else if (circle.x - circle.radius < 0) {
