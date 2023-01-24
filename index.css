@@ -74,3 +74,7 @@ canvas {
 .peg:hover {
 	border: 5px solid rgb(240, 77, 12);
 }
+
+#trivia {
+	padding: 2rem;
+}
