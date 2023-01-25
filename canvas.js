@@ -198,7 +198,6 @@ function renderPegArray(pegArray, circle) {
 function reset() {
 	gravity = 0;
 	sum = 0;
-	isGravityEnabled = false;
 	circle.reset();
 	resetPegArray(pegArray);
 	resetResult();
