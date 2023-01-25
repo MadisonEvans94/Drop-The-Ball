@@ -30,25 +30,40 @@ class highScoresList {
 	 * @param {scoreEntry} score 
 	 */
 	addScore(score) {
-		//update the hiScores in the DOM first
 		this.scores.push(score)
-		//make sure our array of scores is sorted
 		this.scores.sort((a,b) => b.score - a.score);
-
         this.renderScores();
 
 		//update the server. Note if this fails, nobody really cares bc it's a demo project
 		postJSON(highScoresURL, score);
 	}
-
+	
     renderScores() {
-        const scoresList = document.querySelector('#high-scores-list');
-        scoresList.innerHTML = "";
+        const scoresTable = document.querySelector('#high-scores-table');
+
+		//clear out the current table
+        scoresTable.innerHTML = 
+			`<tr>
+				<th>Name</th>
+				<th>Score</th>
+				<th>Date</th>
+			</tr>`;
+
+		//recreate table with new scores. Note scores are sorted in descending order
         this.scores.forEach(score => {
-            const li = document.createElement('li');
-            li.textContent = `${score.score}     ${score.name}      ${score.dateTime}`;
-            scoresList.append(li);
-            //assumes scores are stored in descending order
+            const tr = document.createElement('tr');
+			
+			const tdName = document.createElement('td');
+			tdName.textContent = score.name;
+
+			const tdScore = document.createElement('td');
+			tdScore.textContent = score.score;
+
+			const tdDate = document.createElement('td');
+			tdDate.textContent = score.dateTime;
+
+			tr.append(tdName, tdScore, tdDate);
+			scoresTable.append(tr);
         });
     }
 }
@@ -62,14 +77,14 @@ const form = document.querySelector('#new-score-form');
 const highScoresButton = document.querySelector('.btn');
 
 highScoresButton.addEventListener('click', e => {
-	const highScoresList = document.querySelector('#high-scores-list');
-	if(highScoresList.classList.contains('hidden')) {
-		highScoresList.classList.remove('hidden');
+	const highScoresTable = document.querySelector('#high-scores-table');
+	if(highScoresTable.classList.contains('hidden')) {
+		highScoresTable.classList.remove('hidden');
 		e.target.textContent = 'Hide High Scores';
 	}
 	else {
 		e.target.textContent = "Show High Scores";
-		highScoresList.classList.add("hidden");
+		highScoresTable.classList.add("hidden");
 	}
 })
 

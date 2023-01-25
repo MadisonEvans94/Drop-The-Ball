@@ -1,3 +1,16 @@
 {
-  "highScores": []
+  "highScores": [
+    {
+      "name": "Jevin Leno",
+      "score": 244,
+      "dateTime": "1/25/2023 9:7:8",
+      "id": 1
+    },
+    {
+      "name": "Jerves",
+      "score": 36,
+      "dateTime": "1/25/2023 12:3:43",
+      "id": 2
+    }
+  ]
 }
