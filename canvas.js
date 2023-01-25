@@ -2,7 +2,7 @@
 const PEG_COLOR = "black";
 const CIRCLE_RADIUS = 30;
 const PEG_RADIUS = 18;
-let sequenceSum = 0;
+let sum = 0;
 const DAMPER = 0.95;
 const PEG_NUM = 5;
 const CIRCLE_MASS = 0.3;
@@ -226,7 +226,7 @@ renderPegArray(pegArray, circle);
 // Resets the board and reshuffles peg numbers
 function reset() {
 	gravity = 0;
-	sequenceSum = 0;
+	sum = 0;
 	isGravityEnabled = false;
 	circle.reset();
 	resetPegArray(pegArray);
@@ -242,8 +242,8 @@ function refreshCanvas() {
 function animate() {
 	//if the ball reaches the bottom of the canvas, then break out of the animation loop and return/log the sequence array
 	if (circle.y - 2 * circle.radius > canvas.height) {
-		queryDb(sequenceSum);
-		if(scoreList.isTop10Score(sequenceSum))
+		queryDb(sum);
+		if(scoreList.isTop10Score(sum))
 		{
 			const modal = document.querySelector('#high-scores-modal');
 			modal.style.display = "block";
@@ -308,7 +308,7 @@ function hasCollided(circle, peg) {
 			let angle = computeAngle(circle.x, circle.y, peg.x, peg.y);
 			resolveCollision(circle, peg, angle);
 			peg.showNumber();
-			sequenceSum += peg.number;
+			sum += peg.number;
 		}
 		peg.contactFlag = true;
 	} else {
