@@ -9,9 +9,6 @@ const CIRCLE_MASS = 0.3;
 const CANVAS_COLOR = "rgba(0,0,0,0)";
 let mousePos;
 const MAX_NUM = 50; // maximum value of number attribute within a peg
-
-//gravity globals
-let isGravityEnabled = false;
 let gravity = 0;
 
 // Canvas Setup
@@ -33,22 +30,11 @@ const rightWall = (innerWidth - canvas.width) / 2 + canvas.width;
 canvas.addEventListener("mousemove", (e) => {
 	mousePos = e.offsetX;
 });
+
 canvas.addEventListener("click", () => animationStart());
 
-//gravity toggler helper function
-// function toggleGravity() {
-// 	console.log("gravity toggled", gravity);
-// 	isGravityEnabled = !isGravityEnabled;
-// 	if (isGravityEnabled) {
-// 		gravity = 1;
-// 	} else {
-// 		gravity = 0;
-// 	}
-// }
-
 function animationStart() {
-	if(!isGravityEnabled) {
-		isGravityEnabled = true;
+	if(!gravity) {
 		gravity = 1;
 	}
 }
@@ -155,14 +141,6 @@ class CircleFactory {
 	}
 }
 
-//circle factory instantiation using global constants as macro controls
-const circleFactory = new CircleFactory(
-	XSTART,
-	YSTART,
-	CIRCLE_RADIUS,
-	CIRCLE_MASS
-);
-
 /* ------------------------------------- PEG ARRAY SETUP ---------------------------------------- */
 
 // Peg Board Array Initiator function. Builds the instances of each peg within the peg board array
@@ -213,21 +191,13 @@ function renderPegArray(pegArray, circle) {
 	});
 }
 
-/* ------------------------------------- OBJECT INSTANTIATION ---------------------------------------- */
 
-const circle = circleFactory.build();
-
-let pegArray = initPegArray(PEG_NUM, PEG_RADIUS);
-
-circle.draw();
-renderPegArray(pegArray, circle);
 /* ------------------------------------- RESET FUNCTIONALITY --------------------------------*/
 
 // Resets the board and reshuffles peg numbers
 function reset() {
 	gravity = 0;
 	sum = 0;
-	isGravityEnabled = false;
 	circle.reset();
 	resetPegArray(pegArray);
 	resetResult();
@@ -254,7 +224,7 @@ function animate() {
 	refreshCanvas();
 
 	//conditional for circle state before gravity is enabled
-	if (!isGravityEnabled) {
+	if (!gravity) {
 		circle.x = mousePos * 1;
 		if (circle.x + circle.radius > canvas.width) {
 			circle.x = canvas.width - circle.radius;
@@ -273,7 +243,6 @@ function animate() {
 	//perform browser rendering of frame
 	requestAnimationFrame(animate);
 }
-animate();
 /* ------------------------------------- COLLISION DETECTION ---------------------------------------- */
 
 //pythagorean theorem helper function
@@ -370,3 +339,17 @@ function resolveCollision(circle, peg, angle) {
 		peg.dy = vResult2.y * 0;
 	}
 }
+
+
+/* ------------------------------------- OBJECT INSTANTIATION ---------------------------------------- */
+const circleFactory = new CircleFactory(
+	XSTART,
+	YSTART,
+	CIRCLE_RADIUS,
+	CIRCLE_MASS
+);
+const circle = circleFactory.build();
+let pegArray = initPegArray(PEG_NUM, PEG_RADIUS);
+
+/* ------------------------- DRAWING TO SCREEN & UPDATING MODEL ------------------------------ */
+animate();
