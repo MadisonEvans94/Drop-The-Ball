@@ -5,11 +5,17 @@ const PEG_RADIUS = 18;
 let sequenceSum = 0;
 const DAMPER = 0.95;
 const PEG_NUM = 5;
-
 const CIRCLE_MASS = 0.3;
 const CANVAS_COLOR = "rgba(0,0,0,0)";
 let mousePos;
 const MAX_NUM = 50; // maximum value of number attribute within a peg
+let scoreList = null;
+
+function initScoreList(data) {
+	scoreList = new hiScoresList(data);
+}
+
+getJSON(hiScoresURL).then(initScoreList);
 
 //gravity globals
 let isGravityEnabled = false;
@@ -43,7 +49,7 @@ function toggleGravity() {
 	if (isGravityEnabled) {
 		gravity = 1;
 	} else {
-		gravity = -1;
+		gravity = 0;
 	}
 }
 /* ------------------------------------- CLASSES ---------------------------------------- */
@@ -238,6 +244,9 @@ function animate() {
 	//if the ball reaches the bottom of the canvas, then break out of the animation loop and return/log the sequence array
 	if (circle.y - 2 * circle.radius > canvas.height) {
 		queryDb(sequenceSum);
+		let now = new Date();
+		let dateTime = `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
+		scoreList.addScore(new scoreEntry("Test Name", sequenceSum, dateTime));
 		//delete circle;
 		return;
 	}
