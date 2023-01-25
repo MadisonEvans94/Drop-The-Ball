@@ -236,23 +236,12 @@ function animate() {
 	console.log("animation");
 	//if the ball reaches the bottom of the canvas, then break out of the animation loop and return/log the sequence array
 	if (circle.y - 2 * circle.radius > canvas.height) {
+		console.log('GAME OVER');
 		queryDb(sequenceSum);
 		if(scoreList.isTop10Score(sequenceSum))
 		{
-			let now = new Date();
-			let dateTime = `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
 			const modal = document.querySelector('#high-scores-modal');
 			modal.style.display = "block";
-			const span = document.querySelector('.close');
-			const form = document.querySelector('#new-score-form');
-			span.addEventListener('click', function() {
-				modal.style.display = "none";
-			});
-			form.addEventListener('submit', e => {
-				e.preventDefault();
-				scoreList.addScore(new scoreEntry(e.target.name.value, sequenceSum, dateTime));
-				modal.style.display = "none";
-			});
 		}
 		//delete circle;
 		return;
