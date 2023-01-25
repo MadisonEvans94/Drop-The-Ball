@@ -240,7 +240,7 @@ function refreshCanvas() {
 	ctx.fillRect(0, 0, innerWidth, innerHeight);
 }
 function animate() {
-	//if the ball reaches the bottom of the canvas, then break out of the animation loop and return/log the sequence array
+	//if the ball reaches the bottom of the canvas, then break out of the animation loop and handle high scores
 	if (circle.y - 2 * circle.radius > canvas.height) {
 		queryDb(sum);
 		if(scoreList.isTop10Score(sum))
@@ -248,7 +248,6 @@ function animate() {
 			const modal = document.querySelector('#high-scores-modal');
 			modal.style.display = "block";
 		}
-		//delete circle;
 		return;
 	}
 
