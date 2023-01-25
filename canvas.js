@@ -33,16 +33,23 @@ const rightWall = (innerWidth - canvas.width) / 2 + canvas.width;
 canvas.addEventListener("mousemove", (e) => {
 	mousePos = e.offsetX;
 });
-canvas.addEventListener("click", () => toggleGravity());
+canvas.addEventListener("click", () => animationStart());
 
 //gravity toggler helper function
-function toggleGravity() {
-	console.log("gravity toggled", gravity);
-	isGravityEnabled = !isGravityEnabled;
-	if (isGravityEnabled) {
+// function toggleGravity() {
+// 	console.log("gravity toggled", gravity);
+// 	isGravityEnabled = !isGravityEnabled;
+// 	if (isGravityEnabled) {
+// 		gravity = 1;
+// 	} else {
+// 		gravity = 0;
+// 	}
+// }
+
+function animationStart() {
+	if(!isGravityEnabled) {
+		isGravityEnabled = true;
 		gravity = 1;
-	} else {
-		gravity = 0;
 	}
 }
 /* ------------------------------------- CLASSES ---------------------------------------- */
@@ -233,10 +240,8 @@ function refreshCanvas() {
 	ctx.fillRect(0, 0, innerWidth, innerHeight);
 }
 function animate() {
-	console.log("animation");
 	//if the ball reaches the bottom of the canvas, then break out of the animation loop and return/log the sequence array
 	if (circle.y - 2 * circle.radius > canvas.height) {
-		console.log('GAME OVER');
 		queryDb(sequenceSum);
 		if(scoreList.isTop10Score(sequenceSum))
 		{
