@@ -352,7 +352,5 @@ const circleFactory = new CircleFactory(
 const circle = circleFactory.build();
 let pegArray = initPegArray(PEG_NUM, PEG_RADIUS);
 
-/* ------------------------- DRAWING TO SCREEN ------------------------------ */
-circle.draw();
-renderPegArray(pegArray, circle);
+/* ------------------------- DRAWING TO SCREEN & UPDATING MODEL ------------------------------ */
 animate();
