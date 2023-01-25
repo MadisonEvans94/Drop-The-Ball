@@ -9,13 +9,6 @@ const CIRCLE_MASS = 0.3;
 const CANVAS_COLOR = "rgba(0,0,0,0)";
 let mousePos;
 const MAX_NUM = 50; // maximum value of number attribute within a peg
-let scoreList = null;
-
-function initScoreList(data) {
-	scoreList = new highScoresList(data);
-}
-
-getJSON(highScoresURL).then(initScoreList);
 
 //gravity globals
 let isGravityEnabled = false;
@@ -248,10 +241,10 @@ function animate() {
 		{
 			let now = new Date();
 			let dateTime = `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
-			const modal = document.querySelector('#highScoresModal');
+			const modal = document.querySelector('#high-scores-modal');
 			modal.style.display = "block";
 			const span = document.querySelector('.close');
-			const form = document.querySelector('#newScoreForm');
+			const form = document.querySelector('#new-score-form');
 			span.addEventListener('click', function() {
 				modal.style.display = "none";
 			});

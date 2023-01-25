@@ -77,7 +77,7 @@ body {
 	border: 5px solid rgb(240, 77, 12);
 }
 /* styling for reset button */
-.reset-btn {
+.reset-btn, .btn {
 	background-color: transparent;
 	padding: 1rem;
 	box-shadow: none;
