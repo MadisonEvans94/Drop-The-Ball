@@ -2,10 +2,9 @@
 const PEG_COLOR = "black";
 const CIRCLE_RADIUS = 30;
 const PEG_RADIUS = 18;
-let sequenceSum = 0;
+let sum = 0;
 const DAMPER = 0.95;
 const PEG_NUM = 5;
-
 const CIRCLE_MASS = 0.3;
 const CANVAS_COLOR = "rgba(0,0,0,0)";
 let mousePos;
@@ -34,16 +33,23 @@ const rightWall = (innerWidth - canvas.width) / 2 + canvas.width;
 canvas.addEventListener("mousemove", (e) => {
 	mousePos = e.offsetX;
 });
-canvas.addEventListener("click", () => toggleGravity());
+canvas.addEventListener("click", () => animationStart());
 
 //gravity toggler helper function
-function toggleGravity() {
-	console.log("gravity toggled", gravity);
-	isGravityEnabled = !isGravityEnabled;
-	if (isGravityEnabled) {
+// function toggleGravity() {
+// 	console.log("gravity toggled", gravity);
+// 	isGravityEnabled = !isGravityEnabled;
+// 	if (isGravityEnabled) {
+// 		gravity = 1;
+// 	} else {
+// 		gravity = 0;
+// 	}
+// }
+
+function animationStart() {
+	if(!isGravityEnabled) {
+		isGravityEnabled = true;
 		gravity = 1;
-	} else {
-		gravity = 0;
 	}
 }
 /* ------------------------------------- CLASSES ---------------------------------------- */
@@ -220,7 +226,7 @@ renderPegArray(pegArray, circle);
 // Resets the board and reshuffles peg numbers
 function reset() {
 	gravity = 0;
-	sequenceSum = 0;
+	sum = 0;
 	isGravityEnabled = false;
 	circle.reset();
 	resetPegArray(pegArray);
@@ -234,11 +240,13 @@ function refreshCanvas() {
 	ctx.fillRect(0, 0, innerWidth, innerHeight);
 }
 function animate() {
-	console.log("animation");
-	//if the ball reaches the bottom of the canvas, then break out of the animation loop and return/log the sequence array
+	//if the ball reaches the bottom of the canvas, then break out of the animation loop and handle high scores
 	if (circle.y - 2 * circle.radius > canvas.height) {
-		queryDb(sequenceSum);
-		//delete circle;
+		queryDb(sum);
+		if(scoreList.isTop10Score(sum))
+		{
+			modal.style.display = "block";
+		}
 		return;
 	}
 
@@ -298,7 +306,7 @@ function hasCollided(circle, peg) {
 			let angle = computeAngle(circle.x, circle.y, peg.x, peg.y);
 			resolveCollision(circle, peg, angle);
 			peg.showNumber();
-			sequenceSum += peg.number;
+			sum += peg.number;
 		}
 		peg.contactFlag = true;
 	} else {

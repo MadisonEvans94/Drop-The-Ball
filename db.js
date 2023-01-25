@@ -1,6 +1,10 @@
+///////////USEFUL CONSTANTS//////////////
 const resultDiv = document.querySelector("#trivia");
+const highScoresURL = "http://localhost:3000/highScores";
+////////////////////////////////////////
 
-//helper methods
+
+//////////API CALLS////////////
 function queryDb(number) {
 	getJSON(`http://numbersapi.com/${number}?json`).then(renderResult);
 	getJSON(`http://numbersapi.com/${number}/year?json`).then(renderResult);
@@ -20,6 +24,24 @@ function getJSON(url) {
 		.catch((errorMsg) => console.log(errorMsg));
 }
 
+function postJSON(url, score) {
+	return fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(score)
+	}).then(response => {
+		if(response.ok) {
+			return response.json();
+		}
+		throw response;
+	});
+}
+////////////////////////////////////
+
+
+///////////DOM MANIPULATION//////////
 function renderResult(data) {
 	insertResultsHeaderIfNotPresent();
 
@@ -48,7 +70,21 @@ function insertResetButton() {
 	resetBtn.textContent = "reset board";
 	resultDiv.append(resetBtn);
 }
+//////////////////////////////////////////
+
+
+////////////OTHER///////////
 // helper function to clear the results div upon reset
 function resetResult() {
 	resultDiv.innerHTML = "";
 }
+
+//grab high score data from server and store it in storeList
+let scoreList = null;
+
+function initScoreList(data) {
+	scoreList = new highScoresList(data);
+}
+
+getJSON(highScoresURL).then(initScoreList);
+/////////////////////////////////
