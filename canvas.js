@@ -43,7 +43,7 @@ function toggleGravity() {
 	if (isGravityEnabled) {
 		gravity = 1;
 	} else {
-		gravity = 0;
+		gravity = -1;
 	}
 }
 /* ------------------------------------- CLASSES ---------------------------------------- */
