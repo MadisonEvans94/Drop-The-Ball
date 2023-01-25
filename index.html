@@ -5,7 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Document</title>
-		<script src="hiScores.js"></script>
+		<script src="highScores.js"></script>
 		<script defer src="db.js"></script>
 		<script defer src="./canvas.js"></script>
 		<link rel="stylesheet" href="./index.css" />
@@ -19,9 +19,23 @@
 			<div class="number"></div>
 			<div class="sequence-sum"></div> -->
 		</div>
-		<div id="hiScores">
-			<h2 id="hiScoresHeader">High Scores</h2>
+		<div id="highScores">
+			<h2 id="highScoresHeader">High Scores</h2>
 			<ol id="scoresList" class="hidden"></ol>
+
+			<!--Modal box for inputting new high scores-->
+			<div id="highScoresModal" class="modal">
+				<div class="modal-content">
+					<span class="close">&times;</span>
+					<h2 style="text-align:center">New High Score!</h2>
+					<form id="newScoreForm">
+						<label for="name">Name:</label>
+						<input type="text" id="form-name" name = "name">
+
+						<input type="submit" value="Submit Score!">
+					</form>
+				</div>
+			</div>
 		</div>
 	</body>
 </html>

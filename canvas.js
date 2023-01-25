@@ -12,10 +12,10 @@ const MAX_NUM = 50; // maximum value of number attribute within a peg
 let scoreList = null;
 
 function initScoreList(data) {
-	scoreList = new hiScoresList(data);
+	scoreList = new highScoresList(data);
 }
 
-getJSON(hiScoresURL).then(initScoreList);
+getJSON(highScoresURL).then(initScoreList);
 
 //gravity globals
 let isGravityEnabled = false;
@@ -244,9 +244,23 @@ function animate() {
 	//if the ball reaches the bottom of the canvas, then break out of the animation loop and return/log the sequence array
 	if (circle.y - 2 * circle.radius > canvas.height) {
 		queryDb(sequenceSum);
-		let now = new Date();
-		let dateTime = `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
-		scoreList.addScore(new scoreEntry("Test Name", sequenceSum, dateTime));
+		if(scoreList.isTop10Score(sequenceSum))
+		{
+			let now = new Date();
+			let dateTime = `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
+			const modal = document.querySelector('#highScoresModal');
+			modal.style.display = "block";
+			const span = document.querySelector('.close');
+			const form = document.querySelector('#newScoreForm');
+			span.addEventListener('click', function() {
+				modal.style.display = "none";
+			});
+			form.addEventListener('submit', e => {
+				e.preventDefault();
+				scoreList.addScore(new scoreEntry(e.target.name.value, sequenceSum, dateTime));
+				modal.style.display = "none";
+			});
+		}
 		//delete circle;
 		return;
 	}
