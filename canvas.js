@@ -245,7 +245,6 @@ function animate() {
 		queryDb(sum);
 		if(scoreList.isTop10Score(sum))
 		{
-			const modal = document.querySelector('#high-scores-modal');
 			modal.style.display = "block";
 		}
 		return;
