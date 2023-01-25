@@ -9,9 +9,6 @@ const CIRCLE_MASS = 0.3;
 const CANVAS_COLOR = "rgba(0,0,0,0)";
 let mousePos;
 const MAX_NUM = 50; // maximum value of number attribute within a peg
-
-//gravity globals
-//let isGravityEnabled = false;
 let gravity = 0;
 
 // Canvas Setup
@@ -144,14 +141,6 @@ class CircleFactory {
 	}
 }
 
-//circle factory instantiation using global constants as macro controls
-const circleFactory = new CircleFactory(
-	XSTART,
-	YSTART,
-	CIRCLE_RADIUS,
-	CIRCLE_MASS
-);
-
 /* ------------------------------------- PEG ARRAY SETUP ---------------------------------------- */
 
 // Peg Board Array Initiator function. Builds the instances of each peg within the peg board array
@@ -202,14 +191,7 @@ function renderPegArray(pegArray, circle) {
 	});
 }
 
-/* ------------------------------------- OBJECT INSTANTIATION ---------------------------------------- */
 
-const circle = circleFactory.build();
-
-let pegArray = initPegArray(PEG_NUM, PEG_RADIUS);
-
-circle.draw();
-renderPegArray(pegArray, circle);
 /* ------------------------------------- RESET FUNCTIONALITY --------------------------------*/
 
 // Resets the board and reshuffles peg numbers
@@ -262,7 +244,6 @@ function animate() {
 	//perform browser rendering of frame
 	requestAnimationFrame(animate);
 }
-animate();
 /* ------------------------------------- COLLISION DETECTION ---------------------------------------- */
 
 //pythagorean theorem helper function
@@ -359,3 +340,19 @@ function resolveCollision(circle, peg, angle) {
 		peg.dy = vResult2.y * 0;
 	}
 }
+
+
+/* ------------------------------------- OBJECT INSTANTIATION ---------------------------------------- */
+const circleFactory = new CircleFactory(
+	XSTART,
+	YSTART,
+	CIRCLE_RADIUS,
+	CIRCLE_MASS
+);
+const circle = circleFactory.build();
+let pegArray = initPegArray(PEG_NUM, PEG_RADIUS);
+
+/* ------------------------- DRAWING TO SCREEN ------------------------------ */
+circle.draw();
+renderPegArray(pegArray, circle);
+animate();
