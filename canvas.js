@@ -11,7 +11,7 @@ let mousePos;
 const MAX_NUM = 50; // maximum value of number attribute within a peg
 
 //gravity globals
-let isGravityEnabled = false;
+//let isGravityEnabled = false;
 let gravity = 0;
 
 // Canvas Setup
@@ -33,22 +33,11 @@ const rightWall = (innerWidth - canvas.width) / 2 + canvas.width;
 canvas.addEventListener("mousemove", (e) => {
 	mousePos = e.offsetX;
 });
+
 canvas.addEventListener("click", () => animationStart());
 
-//gravity toggler helper function
-// function toggleGravity() {
-// 	console.log("gravity toggled", gravity);
-// 	isGravityEnabled = !isGravityEnabled;
-// 	if (isGravityEnabled) {
-// 		gravity = 1;
-// 	} else {
-// 		gravity = 0;
-// 	}
-// }
-
 function animationStart() {
-	if(!isGravityEnabled) {
-		isGravityEnabled = true;
+	if(!gravity) {
 		gravity = 1;
 	}
 }
@@ -254,7 +243,7 @@ function animate() {
 	refreshCanvas();
 
 	//conditional for circle state before gravity is enabled
-	if (!isGravityEnabled) {
+	if (!gravity) {
 		circle.x = mousePos * 1;
 		if (circle.x + circle.radius > canvas.width) {
 			circle.x = canvas.width - circle.radius;
