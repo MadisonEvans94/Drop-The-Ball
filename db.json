@@ -1,3 +1,10 @@
 {
-  "highScores": []
+  "highScores": [
+    {
+      "name": "Madison",
+      "score": 327,
+      "dateTime": "1/26/2023 9:6:40",
+      "id": 1
+    }
+  ]
 }

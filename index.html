@@ -11,38 +11,49 @@
 		<link rel="stylesheet" href="./index.css" />
 	</head>
 	<body>
-		<div class="canvas-container">
-			<canvas id="game-canvas" class="canvas"></canvas>
-		</div>
-		<div id="trivia">
-			<!-- <div class="peg"></div>
-			<div class="number"></div>
-			<div class="sequence-sum"></div> -->
-		</div>
-		<div id="highScores">
-			<button id="high-scores-button" class="btn">Show High Scores</button>
-			<h2 id="high-scores-header" class="hidden">High Scores</h2>
+		<div class="grid-container">
+			<!-- grid item 1 -->
+			<div class="grid-item-1">
+				<h1>title</h1>
+				<h2>description</h2>
+			</div>
+			<!-- grid item 2 -->
+			<div class="grid-item-2">
+				<canvas id="game-canvas" class="canvas-container"></canvas>
+			</div>
+			<!-- grid item 3 -->
+			<div class="grid-item-3">
+				<div id="trivia">
+					<!-- <div class="peg"></div>
+					<div class="number"></div>
+					<div class="sequence-sum"></div> -->
+				</div>
+				<div id="highScores">
+					<button id="high-scores-button" class="btn">Show High Scores</button>
+					<h2 id="high-scores-header" class="hidden">High Scores</h2>
 
-			<table id="high-scores-table" class="hidden">
-				<tr>
-					<th>Name</th>
-					<th>Score</th>
-					<th>Date</th>
-				</tr>
-			</table>
-			<!-- <ol id="high-scores-list" class="hidden"></ol> -->
+					<table id="high-scores-table" class="hidden">
+						<tr>
+							<th>Name</th>
+							<th>Score</th>
+							<th>Date</th>
+						</tr>
+					</table>
+					<!-- <ol id="high-scores-list" class="hidden"></ol> -->
 
-			<!--Modal box for inputting new high scores-->
-			<div id="high-scores-modal" class="modal">
-				<div class="modal-content">
-					<span class="close">&times;</span>
-					<h2 style="text-align:center">New High Score!</h2>
-					<form id="new-score-form">
-						<label for="name">Name:</label>
-						<input type="text" id="form-name" name="name">
+					<!--Modal box for inputting new high scores-->
+					<div id="high-scores-modal" class="modal">
+						<div class="modal-content">
+							<span class="close">&times;</span>
+							<h2 style="text-align: center">New High Score!</h2>
+							<form id="new-score-form">
+								<label for="name">Name:</label>
+								<input type="text" id="form-name" name="name" />
 
-						<input type="submit" value="Submit Score!">
-					</form>
+								<input type="submit" value="Submit Score!" />
+							</form>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
