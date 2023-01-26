@@ -6,7 +6,7 @@ let sum = 0;
 const DAMPER = 0.95;
 const PEG_NUM = 5;
 const CIRCLE_MASS = 0.3;
-const CANVAS_COLOR = "rgba(0,0,0,0)";
+const CANVAS_COLOR = "#3B92FF";
 let mousePos;
 const MAX_NUM = 50; // maximum value of number attribute within a peg
 let gravity = 0;
@@ -34,7 +34,7 @@ canvas.addEventListener("mousemove", (e) => {
 canvas.addEventListener("click", () => animationStart());
 
 function animationStart() {
-	if(!gravity) {
+	if (!gravity) {
 		gravity = 1;
 	}
 }
@@ -191,7 +191,6 @@ function renderPegArray(pegArray, circle) {
 	});
 }
 
-
 /* ------------------------------------- RESET FUNCTIONALITY --------------------------------*/
 
 // Resets the board and reshuffles peg numbers
@@ -213,8 +212,7 @@ function animate() {
 	//if the ball reaches the bottom of the canvas, then break out of the animation loop and handle high scores
 	if (circle.y - 2 * circle.radius > canvas.height) {
 		queryDb(sum);
-		if(scoreList.isTop10Score(sum))
-		{
+		if (scoreList.isTop10Score(sum)) {
 			modal.style.display = "block";
 		}
 		return;
@@ -339,7 +337,6 @@ function resolveCollision(circle, peg, angle) {
 		peg.dy = vResult2.y * 0;
 	}
 }
-
 
 /* ------------------------------------- OBJECT INSTANTIATION ---------------------------------------- */
 const circleFactory = new CircleFactory(

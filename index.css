@@ -5,12 +5,27 @@
 	margin: 0;
 	padding: 0;
 }
-
+/* google font */
 .hidden {
 	display: none;
 }
 .block {
 	display: block;
+}
+
+body {
+	background-image: url("./background.svg");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
+
+	font-family: "Roboto", sans-serif;
+	font-family: "Signika Negative", sans-serif;
+	font-family: "Sofia Sans", sans-serif;
+	font-family: "Ubuntu", sans-serif;
+	overscroll-behavior-y: none;
+	overscroll-behavior-x: none;
 }
 
 .grid-container {
@@ -19,23 +34,30 @@
 	grid-template-rows: repeat(6, 1fr);
 	grid-column-gap: 0px;
 	grid-row-gap: 0px;
+	margin: 0 3rem;
 }
 
 .grid-item-1 {
 	grid-area: 1 / 1 / 2 / 4;
+	display: flex;
+	flex-direction: column;
+	color: white;
+	text-align: center;
+	margin: 1rem 0 0 0;
 }
 .grid-item-2 {
 	grid-area: 2 / 1 / 7 / 3;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 .grid-item-3 {
 	grid-area: 2 / 3 / 7 / 4;
 }
-body {
-	background: linear-gradient(to bottom, #0077be, #ee5914);
-	background-size: cover;
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-	background-position: center;
+
+.overscroll-container {
+	overflow-y: scroll;
+	max-height: 20rem;
 }
 
 .canvas-container {
@@ -48,10 +70,9 @@ body {
 .canvas {
 	position: absolute;
 	width: 100%;
-
 	border: 5px solid rgb(0, 0, 0);
+
 	border-radius: 1rem;
-	box-shadow: 0px 0px 10px rgb(16, 5, 6);
 }
 
 /* Peg styles */

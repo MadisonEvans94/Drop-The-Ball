@@ -9,17 +9,24 @@
 		<script defer src="db.js"></script>
 		<script defer src="./canvas.js"></script>
 		<link rel="stylesheet" href="./index.css" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&family=Signika+Negative:wght@300&family=Sofia+Sans:wght@100;200&family=Ubuntu:wght@300;400;500;700&display=swap"
+			rel="stylesheet" />
 	</head>
 	<body>
 		<div class="grid-container">
 			<!-- grid item 1 -->
 			<div class="grid-item-1">
-				<h1>title</h1>
-				<h2>description</h2>
+				<h1>GAME TITLE</h1>
+				<h2>game description</h2>
 			</div>
 			<!-- grid item 2 -->
 			<div class="grid-item-2">
-				<canvas id="game-canvas" class="canvas-container"></canvas>
+				<div class="canvas-container">
+					<canvas id="game-canvas" class="canvas"></canvas>
+				</div>
 			</div>
 			<!-- grid item 3 -->
 			<div class="grid-item-3">
@@ -31,14 +38,15 @@
 				<div id="highScores">
 					<button id="high-scores-button" class="btn">Show High Scores</button>
 					<h2 id="high-scores-header" class="hidden">High Scores</h2>
-
-					<table id="high-scores-table" class="hidden">
-						<tr>
-							<th>Name</th>
-							<th>Score</th>
-							<th>Date</th>
-						</tr>
-					</table>
+					<div class="overscroll-container">
+						<table id="high-scores-table" class="hidden">
+							<tr>
+								<th>Name</th>
+								<th>Score</th>
+								<th>Date</th>
+							</tr>
+						</table>
+					</div>
 					<!-- <ol id="high-scores-list" class="hidden"></ol> -->
 
 					<!--Modal box for inputting new high scores-->
