@@ -98,8 +98,7 @@ form.addEventListener('submit', e => {
 	modal.style.display = "block";
 
 	let now = new Date();
-	let dateTime = `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
-	scoreList.addScore(new scoreEntry(e.target.name.value, sum, dateTime));
+	scoreList.addScore(new scoreEntry(e.target.name.value, sum, now.toLocaleString()));
 	e.target.reset();
 	modal.style.display = "none";
 });
