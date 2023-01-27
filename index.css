@@ -27,6 +27,9 @@ body {
 h1 {
 	font-size: 70px;
 }
+p {
+	font-size: 1.2rem;
+}
 
 .grid-container {
 	display: grid;
@@ -163,7 +166,7 @@ tr {
 }
 /* Styling for results Div */
 #trivia {
-	padding: 2rem;
+	padding: 0 2rem;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
