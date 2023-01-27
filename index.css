@@ -24,13 +24,16 @@ body {
 	overscroll-behavior-y: none;
 	overscroll-behavior-x: none;
 }
+h1 {
+	font-size: 70px;
+}
 
 .grid-container {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	grid-template-rows: repeat(6, 1fr);
 	grid-column-gap: 0px;
-	grid-row-gap: 0px;
+	grid-row-gap: 20px;
 	margin: 0 3rem;
 }
 
