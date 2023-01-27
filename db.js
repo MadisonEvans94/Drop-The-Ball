@@ -3,7 +3,6 @@ const resultDiv = document.querySelector("#trivia");
 const highScoresURL = "http://localhost:3000/highScores";
 ////////////////////////////////////////
 
-
 //////////API CALLS////////////
 function queryDb(number) {
 	getJSON(`http://numbersapi.com/${number}?json`).then(renderResult);
@@ -26,13 +25,13 @@ function getJSON(url) {
 
 function postJSON(url, score) {
 	return fetch(url, {
-		method: 'POST',
+		method: "POST",
 		headers: {
-			'Content-Type': 'application/json'
+			"Content-Type": "application/json",
 		},
-		body: JSON.stringify(score)
-	}).then(response => {
-		if(response.ok) {
+		body: JSON.stringify(score),
+	}).then((response) => {
+		if (response.ok) {
 			return response.json();
 		}
 		throw response;
@@ -40,12 +39,12 @@ function postJSON(url, score) {
 }
 ////////////////////////////////////
 
-
 ///////////DOM MANIPULATION//////////
 function renderResult(data) {
 	insertResultsHeaderIfNotPresent();
 
 	if (data.found) {
+		console.log("datafound");
 		const p = document.createElement("p");
 		p.className = "result";
 		p.textContent = data.text;
@@ -71,7 +70,6 @@ function insertResetButton() {
 	resultDiv.append(resetBtn);
 }
 //////////////////////////////////////////
-
 
 ////////////OTHER///////////
 // helper function to clear the results div upon reset
