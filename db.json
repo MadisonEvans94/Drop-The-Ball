@@ -1,46 +1,40 @@
 {
   "highScores": [
     {
-      "name": "",
-      "score": 328,
-      "dateTime": "1/27/2023, 9:50:36 AM",
+      "name": "Madison ",
+      "score": 371,
+      "dateTime": "1/27/2023, 10:33:58 AM",
       "id": 1
     },
     {
-      "name": "Madison",
-      "score": 537,
-      "dateTime": "1/27/2023, 10:07:15 AM",
+      "name": "Forrest",
+      "score": 110,
+      "dateTime": "1/27/2023, 10:34:08 AM",
       "id": 2
     },
     {
       "name": "Jevin",
-      "score": 192,
-      "dateTime": "1/27/2023, 10:10:34 AM",
+      "score": 708,
+      "dateTime": "1/27/2023, 10:34:20 AM",
       "id": 3
     },
     {
-      "name": "Forrest",
-      "score": 97,
-      "dateTime": "1/27/2023, 10:12:37 AM",
+      "name": "Jevin",
+      "score": 96,
+      "dateTime": "1/27/2023, 10:34:33 AM",
       "id": 4
     },
     {
-      "name": "Tony Stark",
-      "score": 94,
-      "dateTime": "1/27/2023, 10:14:11 AM",
+      "name": "Madison",
+      "score": 297,
+      "dateTime": "1/27/2023, 10:34:48 AM",
       "id": 5
     },
     {
-      "name": "Joe",
-      "score": 107,
-      "dateTime": "1/27/2023, 10:15:20 AM",
+      "name": "Madison",
+      "score": 781,
+      "dateTime": "1/27/2023, 10:35:14 AM",
       "id": 6
-    },
-    {
-      "name": "Michael Weaver",
-      "score": 386,
-      "dateTime": "1/27/2023, 10:29:34 AM",
-      "id": 7
     }
   ]
 }

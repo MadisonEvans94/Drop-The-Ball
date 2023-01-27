@@ -33,7 +33,7 @@ h1 {
 	grid-template-columns: repeat(3, 1fr);
 	grid-template-rows: repeat(6, 1fr);
 	grid-column-gap: 0px;
-	grid-row-gap: 20px;
+	grid-row-gap: 0px;
 	margin: 0 3rem;
 }
 
@@ -101,7 +101,8 @@ h1 {
 	text-align: center;
 	border: 1px solid #ccc;
 }
-td {
+td,
+tr {
 	color: white;
 }
 
@@ -150,6 +151,7 @@ td {
 	justify-self: center;
 	align-self: center;
 	transition: 0.2s;
+	font-size: 1.5rem;
 }
 
 .reset-btn:hover,
