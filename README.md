@@ -4,7 +4,7 @@ Welcome to the "Drop the Ball" project! This web application was created using v
 
 What is a Galton Board?
 
-A Galton board, also known as a quincunx, is a device that consists of a vertical board with a series of pegs or nails arranged in a triangular pattern. The board is filled with a large number of balls or beads, which are dropped from the top of the board. As the balls fall, they hit the pegs and bounce off in different directions, eventually landing in one of the bins at the bottom of the board. This project's implementation uses a uniform array of pegs, each with their own "number" attributes, which get added to a sum upon every ball collision. 
+A Galton board, also known as a quincunx, is a device that consists of a vertical board with a series of pegs or nails arranged in a triangular pattern. The board is filled with a large number of balls or beads, which are dropped from the top of the board. As the balls fall, they hit the pegs and bounce off in different directions, eventually landing in one of the bins at the bottom of the board. This project's implementation uses a uniform array of pegs, each with their own "number" attributes, which get added to a sum upon every ball collision. This sum is then sent to an external api and returns a series of trivia facts about that number. 
 
 How to Use the Virtual Galton Board
 
