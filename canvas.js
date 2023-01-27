@@ -4,7 +4,7 @@ const CIRCLE_RADIUS = 30;
 const PEG_RADIUS = 18;
 let sum = 0;
 const DAMPER = 0.95;
-const PEG_NUM = 5;
+const PEG_NUM = 4;
 const CIRCLE_MASS = 0.3;
 const CANVAS_COLOR = "rgba(255,255,255,.1)";
 let mousePos;
@@ -120,10 +120,6 @@ class Peg extends CanvasEntity {
 			ctx.fillText(`+${this.number}`, this.x, this.y - this.animationCounter);
 			this.animationCounter++;
 		}
-
-		// if (this.showText) {
-		// 	this.displayNumber();
-		// }
 	}
 }
 
@@ -158,7 +154,7 @@ function initPegArray(num, radius) {
 					i * heightBetween + heightBetween / 2 + CIRCLE_RADIUS * 2,
 					radius,
 
-					//creates random ints between 1-9 for number attribute within each peg
+					//creates random ints between 1-MAX_NUM for number attribute within each peg
 					Math.floor(Math.random() * MAX_NUM + 1)
 				)
 			);
