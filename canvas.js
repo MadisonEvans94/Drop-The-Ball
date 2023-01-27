@@ -6,7 +6,7 @@ let sum = 0;
 const DAMPER = 0.95;
 const PEG_NUM = 5;
 const CIRCLE_MASS = 0.3;
-const CANVAS_COLOR = "#3B92FF";
+const CANVAS_COLOR = "rgba(255,255,255,.1)";
 let mousePos;
 const MAX_NUM = 50; // maximum value of number attribute within a peg
 let gravity = 0;

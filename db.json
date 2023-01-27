@@ -1,3 +1,40 @@
 {
-	"highScores": []
+  "highScores": [
+    {
+      "name": "",
+      "score": 328,
+      "dateTime": "1/27/2023, 9:50:36 AM",
+      "id": 1
+    },
+    {
+      "name": "Madison",
+      "score": 537,
+      "dateTime": "1/27/2023, 10:07:15 AM",
+      "id": 2
+    },
+    {
+      "name": "Jevin",
+      "score": 192,
+      "dateTime": "1/27/2023, 10:10:34 AM",
+      "id": 3
+    },
+    {
+      "name": "Forrest",
+      "score": 97,
+      "dateTime": "1/27/2023, 10:12:37 AM",
+      "id": 4
+    },
+    {
+      "name": "Tony Stark",
+      "score": 94,
+      "dateTime": "1/27/2023, 10:14:11 AM",
+      "id": 5
+    },
+    {
+      "name": "Joe",
+      "score": 107,
+      "dateTime": "1/27/2023, 10:15:20 AM",
+      "id": 6
+    }
+  ]
 }
