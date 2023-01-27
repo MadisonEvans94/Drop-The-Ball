@@ -28,7 +28,7 @@ h1 {
 	font-size: 70px;
 }
 p {
-	font-size: 1.2rem;
+	font-size: 1.25rem;
 }
 
 .grid-container {
@@ -223,4 +223,5 @@ tr {
 th,
 td {
 	padding: 20px;
+	font-size: 1.25rem;
 }
