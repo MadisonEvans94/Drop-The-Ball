@@ -1,4 +1,4 @@
-Virtual Galton Board
+DROP THE BALL 
 
 Welcome to the "Drop the Ball" project! This web application was created using vanilla JavaScript, HTML, and CSS, and it allows users to interact with a virtual peg board that is inspired by the famous Galton board.
 
